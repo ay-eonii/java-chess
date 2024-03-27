@@ -19,7 +19,7 @@ public class Chess {
 
     public void movePiece(Position sourcePosition, Position targetPosition) {
         Piece sourcePiece = board.findPieceByPosition(sourcePosition);
-        turn.validate(sourcePiece.color());
+        sourcePiece.checkSelfTurn(turn);
         if (canMove(sourcePosition, targetPosition)) {
             board.placePieceByPosition(sourcePiece, targetPosition);
             board.displacePieceByPosition(sourcePosition);

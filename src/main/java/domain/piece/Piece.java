@@ -1,5 +1,6 @@
 package domain.piece;
 
+import domain.board.Turn;
 import domain.position.Position;
 
 import java.util.Objects;
@@ -38,8 +39,8 @@ public class Piece {
         return color != Color.NONE && color != targetPiece.color;
     }
 
-    public Color color() {
-        return color;
+    public void checkSelfTurn(Turn turn) {
+        turn.validate(color);
     }
 
     @Override
