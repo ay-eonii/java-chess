@@ -18,7 +18,7 @@ public class Turn {
 
     public void validate(Color color) {
         if (this.color != color) {
-            throw new IllegalArgumentException("올바른 차례가 아닙니다.");
+            throw new IllegalArgumentException(String.format("[ERROR] 현재는 %s 턴입니다.", this.color));
         }
     }
 
