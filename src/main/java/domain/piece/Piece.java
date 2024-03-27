@@ -38,6 +38,7 @@ public class Piece {
         return color != Color.NONE && color != targetPiece.color;
     }
 
+    // equals & hashcode를 재정의한 이유가 있을까요?
     @Override
     public boolean equals(Object o) {
         if (this == o) {

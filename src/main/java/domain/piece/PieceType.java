@@ -2,7 +2,7 @@ package domain.piece;
 
 import domain.position.Position;
 
-public enum PieceType {
+public enum PieceType { // (개인적 생각) PieceType Good!
 
     BISHOP(MoveTactic.DIAGONAL, AttackTactic.ATTACK),
     KING(MoveTactic.NEIGHBOR, AttackTactic.ATTACK),

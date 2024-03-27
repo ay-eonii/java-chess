@@ -35,6 +35,8 @@ public enum File {
         List<File> betweenFiles = new ArrayList<>(files.subList(targetOrder, sourceOrder - 1));
         Collections.reverse(betweenFiles);
         return Collections.unmodifiableList(betweenFiles);
+        // new ArrayList를 다시 unmodifiableList로 만드는 이유가 있을까요?
+        // 위 return과 아래 return은 왜 다른 타입인가요?
     }
 
     public boolean isSame(File target) {

@@ -18,4 +18,6 @@ public enum Command {
     public boolean isEnd() {
         return this == END;
     }
+    // command.isStart() 와 command == Command.START는 어떤 차이가 있나요?
+    // 명령어가 늘어나면 메소드 수도 계속 증가하게 되나요?
 }

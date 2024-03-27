@@ -17,6 +17,8 @@ public class Chess {
         if (canMove(sourcePosition, targetPosition) || board.canAttack(sourcePosition, targetPosition)) {
             Piece sourcePiece = board.findPieceByPosition(sourcePosition);
             board.placePieceByPosition(sourcePiece, targetPosition);
+            // 위 두 줄에서 Piece를 가져오지 말고 board가 알아서 하도록 시키는 건 어때요?
+
             board.displacePieceByPosition(sourcePosition);
         }
     }
