@@ -8,6 +8,10 @@ public class Pawn extends Piece {
         super(pieceType, color);
     }
 
+    public Pawn(Piece piece) {
+        super(PieceType.PAWN, piece.color);
+    }
+
     @Override
     public boolean canMove(Position source, Position target) {
         return super.canMove(source, target) && color.canMove(source, target);

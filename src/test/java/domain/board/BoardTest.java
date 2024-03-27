@@ -1,6 +1,7 @@
 package domain.board;
 
 import domain.piece.Color;
+import domain.piece.Pawn;
 import domain.piece.Piece;
 import domain.piece.PieceType;
 import domain.position.File;
@@ -75,5 +76,16 @@ public class BoardTest {
         boolean actual = board.isNotBlocked(source, target);
 
         assertThat(actual).isFalse();
+    }
+
+    @Test
+    void placePieceByPosition_FirstPawn_Pawn() {
+        Pawn firstPawn = new Pawn(PieceType.FIRST_PAWN, Color.WHITE);
+        Position position = new Position(File.B, Rank.FIVE);
+
+        board.placePieceByPosition(firstPawn, position);
+
+        assertThat(board.findPieceByPosition(new Position(File.B, Rank.FIVE)))
+                .isEqualTo(new Pawn(PieceType.PAWN, Color.WHITE));
     }
 }

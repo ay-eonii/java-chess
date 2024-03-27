@@ -1,6 +1,7 @@
 package domain.board;
 
 import domain.piece.Color;
+import domain.piece.Pawn;
 import domain.piece.Piece;
 import domain.piece.PieceType;
 import domain.position.Position;
@@ -44,7 +45,11 @@ public class Board {
     }
 
     public void placePieceByPosition(Piece piece, Position position) {
-        squares.replace(position, piece);
+        Piece changedPiece = piece;
+        if (piece.isSameType(PieceType.FIRST_PAWN)) {
+            changedPiece = new Pawn(piece);
+        }
+        squares.replace(position, changedPiece);
     }
 
     public void displacePieceByPosition(Position position) {
