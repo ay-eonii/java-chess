@@ -67,7 +67,7 @@ public class Position {
     public boolean canAttackDiagonal(Position target) {
         int rankDistance = rank.distance(target.rank);
         int fileDistance = file.distance(target.file);
-        return isNoneStep(rankDistance) || isOneStep(fileDistance);
+        return isOneStep(rankDistance) && isOneStep(fileDistance);
     }
 
     public List<Position> findBetweenStraightPositions(Position target) {
