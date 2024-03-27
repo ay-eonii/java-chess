@@ -20,7 +20,7 @@ public class Chess {
     public void movePiece(Position sourcePosition, Position targetPosition) {
         Piece sourcePiece = board.findPieceByPosition(sourcePosition);
         turn.validate(sourcePiece.color());
-        if (canMove(sourcePosition, targetPosition) || board.canAttack(sourcePosition, targetPosition)) {
+        if (canMove(sourcePosition, targetPosition)) {
             board.placePieceByPosition(sourcePiece, targetPosition);
             board.displacePieceByPosition(sourcePosition);
             turn.swap();
@@ -28,8 +28,11 @@ public class Chess {
     }
 
     private boolean canMove(Position sourcePosition, Position targetPosition) {
-        return board.canMove(sourcePosition, targetPosition)
-                && board.isNotBlocked(sourcePosition, targetPosition);
+        if (board.canMove(sourcePosition, targetPosition) || board.canAttack(sourcePosition, targetPosition)
+                && board.isNotBlocked(sourcePosition, targetPosition)) {
+            return true;
+        }
+        throw new IllegalArgumentException("[ERROR] 이동할 수 없습니다.");
     }
 
     public Board getBoard() {
