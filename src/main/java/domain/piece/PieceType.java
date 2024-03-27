@@ -7,7 +7,8 @@ public enum PieceType {
     BISHOP(MoveTactic.DIAGONAL, AttackTactic.NOT_ATTACK),
     KING(MoveTactic.NEIGHBOR, AttackTactic.NOT_ATTACK),
     KNIGHT(MoveTactic.ONE_STRAIGHT_ONE_DIAGONAL, AttackTactic.NOT_ATTACK),
-    PAWN(MoveTactic.FORWARD_STRAIGHT, AttackTactic.DIAGONAL),
+    PAWN(MoveTactic.FORWARD_ONE_STRAIGHT, AttackTactic.DIAGONAL),
+    FIRST_PAWN(MoveTactic.FORWARD_ONE_OR_TWO_STRAIGHT, AttackTactic.DIAGONAL),
     QUEEN(MoveTactic.STRAIGHT_DIAGONAL, AttackTactic.NOT_ATTACK),
     ROOK(MoveTactic.STRAIGHT, AttackTactic.NOT_ATTACK),
     NONE(MoveTactic.STOP, AttackTactic.NOT_ATTACK),
@@ -29,7 +30,7 @@ public enum PieceType {
         return attackTactic.canAttack(source, target);
     }
 
-    public boolean isPawn() {
-        return this == PAWN;
+    public boolean isFirstPawn() {
+        return this == FIRST_PAWN;
     }
 }

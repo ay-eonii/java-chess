@@ -9,7 +9,7 @@ import java.util.List;
 
 public enum InitialPiecePosition {
 
-    PAWN(PieceType.PAWN, List.of(Rank.TWO, Rank.SEVEN), List.of(File.values())),
+    PAWN(PieceType.FIRST_PAWN, List.of(Rank.TWO, Rank.SEVEN), List.of(File.values())),
     ROOK(PieceType.ROOK, List.of(Rank.ONE, Rank.EIGHT), List.of(File.A, File.H)),
     KNIGHT(PieceType.KNIGHT, List.of(Rank.ONE, Rank.EIGHT), List.of(File.B, File.G)),
     BISHOP(PieceType.BISHOP, List.of(Rank.ONE, Rank.EIGHT), List.of(File.C, File.F)),

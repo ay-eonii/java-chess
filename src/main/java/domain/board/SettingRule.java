@@ -12,7 +12,7 @@ public class SettingRule {
     public Piece findPieceByPosition(Rank rank, File file) {
         PieceType pieceType = InitialPiecePosition.find(rank, file);
         Color color = InitialColorPosition.find(rank);
-        if (pieceType.isPawn()) {
+        if (pieceType.isFirstPawn()) {
             return new Pawn(pieceType, color);
         }
         return new Piece(pieceType, color);

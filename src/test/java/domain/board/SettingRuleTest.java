@@ -26,14 +26,14 @@ public class SettingRuleTest {
         @DisplayName("랭크가 2일 경우 흰색 폰을 반환한다.")
         void findPieceByPosition_RankTwo_WhitePawn() {
             assertThat(settingRule.findPieceByPosition(Rank.TWO, File.A))
-                    .isEqualTo(new Pawn(PieceType.PAWN, Color.WHITE));
+                    .isEqualTo(new Pawn(PieceType.FIRST_PAWN, Color.WHITE));
         }
 
         @Test
         @DisplayName("랭크가 2일 경우 검정색 폰을 반환한다.")
         void findPieceByPosition_RankSeven_BlackPawn() {
             assertThat(settingRule.findPieceByPosition(Rank.SEVEN, File.A))
-                    .isEqualTo(new Pawn(PieceType.PAWN, Color.BLACK));
+                    .isEqualTo(new Pawn(PieceType.FIRST_PAWN, Color.BLACK));
         }
     }
 

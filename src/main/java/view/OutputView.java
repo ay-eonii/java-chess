@@ -42,25 +42,25 @@ public class OutputView {
 
     private enum PieceOutput {
 
-        BISHOP(PieceType.BISHOP, "B"),
-        KING(PieceType.KING, "K"),
-        KNIGHT(PieceType.KNIGHT, "N"),
-        PAWN(PieceType.PAWN, "P"),
-        QUEEN(PieceType.QUEEN, "Q"),
-        ROOK(PieceType.ROOK, "R"),
-        NONE(PieceType.NONE, ".");
+        BISHOP(List.of(PieceType.BISHOP), "B"),
+        KING(List.of(PieceType.KING), "K"),
+        KNIGHT(List.of(PieceType.KNIGHT), "N"),
+        PAWN(List.of(PieceType.FIRST_PAWN, PieceType.PAWN), "P"),
+        QUEEN(List.of(PieceType.QUEEN), "Q"),
+        ROOK(List.of(PieceType.ROOK), "R"),
+        NONE(List.of(PieceType.NONE), ".");
 
-        private final PieceType pieceType;
+        private final List<PieceType> pieceTypes;
         private final String output;
 
-        PieceOutput(PieceType pieceType, String output) {
-            this.pieceType = pieceType;
+        PieceOutput(List<PieceType> pieceTypes, String output) {
+            this.pieceTypes = pieceTypes;
             this.output = output;
         }
 
         private static String asString(Piece piece) {
             String output = Arrays.stream(values())
-                    .filter(pieceOutput -> piece.isSameType(pieceOutput.pieceType))
+                    .filter(pieceOutput -> isAnyMatch(piece, pieceOutput.pieceTypes))
                     .findFirst()
                     .orElse(NONE)
                     .output;
@@ -68,6 +68,11 @@ public class OutputView {
                 return output.toLowerCase();
             }
             return output;
+        }
+
+        private static boolean isAnyMatch(Piece piece, List<PieceType> pieceTypes) {
+            return pieceTypes.stream()
+                    .anyMatch(piece::isSameType);
         }
     }
 }

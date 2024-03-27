@@ -56,17 +56,17 @@ class PawnTest {
         }
 
         @Test
-        @DisplayName("흰색 폰은 출발점이 랭크 2라면 두 칸 전진할 수 있다.")
+        @DisplayName("처음 시작하는 폰이라면 두 칸 전진할 수 있다.")
         void canMove_WhitePawnTwoStepFromRank2_True() {
-            Pawn pawn = new Pawn(PieceType.PAWN, Color.WHITE);
-            Position source = new Position(File.B, Rank.TWO);
-            Position target = new Position(File.B, Rank.FOUR);
+            Pawn pawn = new Pawn(PieceType.FIRST_PAWN, Color.WHITE);
+            Position source = new Position(File.A, Rank.TWO);
+            Position target = new Position(File.A, Rank.FOUR);
 
             assertThat(pawn.canMove(source, target)).isTrue();
         }
 
         @Test
-        @DisplayName("흰색 폰은 출발점이 랭크 2가 아니라면 두 칸 전진할 수 없다.")
+        @DisplayName("처음 시작하는 폰이 아니라면 두 칸 전진할 수 없다.")
         void canMove_WhitePawnTwoStepNotFromRank2_False() {
             Pawn pawn = new Pawn(PieceType.PAWN, Color.WHITE);
             Position source = new Position(File.B, Rank.THREE);
@@ -100,9 +100,9 @@ class PawnTest {
         }
 
         @Test
-        @DisplayName("검은색 폰은 출발점이 랭크 7이면 두 칸 전진할 수 있다.")
+        @DisplayName("처음 시작하는 폰이라면 두 칸 전진할 수 있다.")
         void canMove_WhitePawnTwoStepFromRank2_True() {
-            Pawn pawn = new Pawn(PieceType.PAWN, Color.BLACK);
+            Pawn pawn = new Pawn(PieceType.FIRST_PAWN, Color.BLACK);
             Position source = new Position(File.B, Rank.SEVEN);
             Position target = new Position(File.B, Rank.FIVE);
 
@@ -110,7 +110,7 @@ class PawnTest {
         }
 
         @Test
-        @DisplayName("검은색 폰은 출발점이 랭크 7이 아니라면 두 칸 전진할 수 없다.")
+        @DisplayName("처음 시작하는 폰이라면 두 칸 전진할 수 없다.")
         void canMove_WhitePawnTwoStepNotFromRank2_False() {
             Pawn pawn = new Pawn(PieceType.PAWN, Color.BLACK);
             Position source = new Position(File.B, Rank.SIX);

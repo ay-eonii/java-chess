@@ -19,10 +19,10 @@ class InitialPiecePositionTest {
 
         @ParameterizedTest
         @EnumSource(File.class)
-        @DisplayName("랭크가 2일 경우 폰을 반환한다.")
+        @DisplayName("랭크가 2일 경우 첫 폰을 반환한다.")
         void findPieceByPosition_RankTwo_WhitePawn(File file) {
             assertThat(InitialPiecePosition.find(Rank.TWO, file))
-                    .isEqualTo(PieceType.PAWN);
+                    .isEqualTo(PieceType.FIRST_PAWN);
         }
     }
 
