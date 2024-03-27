@@ -22,6 +22,10 @@ public class PlayCommand {
         return command.isMove();
     }
 
+    public boolean isStatus() {
+        return command.isStatus();
+    }
+
     public Position sourcePosition() {
         return positions.sourcePosition();
     }
