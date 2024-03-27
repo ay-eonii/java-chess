@@ -19,16 +19,28 @@ public class Piece {
         return this.pieceType == pieceType;
     }
 
+    public boolean isNotBlank() {
+        return this.pieceType != PieceType.NONE;
+    }
+
     public boolean isWhite() {
         return color == Color.WHITE;
     }
 
-    public boolean canMove(Position source, Position target) {
+    public boolean canMove(Piece targetPiece, Position sourcePosition, Position targetPosition) {
+        return this.color != targetPiece.color && pieceType.canMove(sourcePosition, targetPosition);
+    }
+
+    protected boolean canMove(Position source, Position target) {
         return pieceType.canMove(source, target);
     }
 
-    public boolean canMove(Piece targetPiece) {
+    protected boolean canMove(Piece targetPiece) {
         return this.color != targetPiece.color;
+    }
+
+    public boolean canAttack(Piece targetPiece, Position sourcePosition, Position targetPosition) {
+        return isOpposite(targetPiece) && canAttack(sourcePosition, targetPosition);
     }
 
     public boolean canAttack(Position source, Position target) {

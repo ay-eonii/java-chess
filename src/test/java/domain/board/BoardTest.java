@@ -1,91 +1,417 @@
 package domain.board;
 
-import domain.piece.Color;
 import domain.piece.Pawn;
 import domain.piece.Piece;
 import domain.piece.PieceType;
-import domain.position.File;
 import domain.position.Position;
-import domain.position.Rank;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static domain.board.PositionFixture.*;
+import static domain.piece.Color.BLACK;
+import static domain.piece.Color.WHITE;
+import static domain.piece.PieceType.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class BoardTest {
+
     private Board board;
 
-    @BeforeEach
-    void setUp() {
-        BoardCreator boardCreator = new BoardCreator();
-        board = boardCreator.create();
+    @Nested
+    class RookTest {
+
+        private static Set<Position> rookPositions() {
+            return Set.of(
+                    A4, B4, C4, E4, F4, G4, H4,
+                    D1, D2, D3, D5, D6, D7, D8
+            );
+        }
+
+        private static Set<Position> notRookPositions() {
+            return otherPositions(rookPositions());
+        }
+
+        @BeforeEach
+        void setUp() {
+            board = new Board(PositionFixture.emptySquares(Map.of(D4, new Piece(ROOK, WHITE))));
+        }
+
+        /**
+         * ...*....
+         * ...*....
+         * ...*....
+         * ***r****
+         * ...*....
+         * ...*....
+         * ...*....
+         */
+        @ParameterizedTest
+        @MethodSource("rookPositions")
+        @DisplayName("장애물이 없고 가능한 움직임이라면 이동할 수 있다.")
+        void canMove_Rook_True(Position targetPosition) {
+            boolean canMove = board.checkMove(D4, targetPosition);
+
+            assertThat(canMove).isTrue();
+        }
+
+        /**
+         * ***.****
+         * ***.****
+         * ***.****
+         * ...r....
+         * ***.****
+         * ***.****
+         * ***.****
+         */
+        @ParameterizedTest
+        @MethodSource("notRookPositions")
+        @DisplayName("불가능한 움직임이라면 예외가 발생한다.")
+        void canMove_Rook_ThrownException(Position invalidPosition) {
+            board = new Board(PositionFixture.emptySquares(Map.of(D4, new Piece(ROOK, WHITE))));
+
+            assertThatThrownBy(() -> board.checkMove(D4, invalidPosition))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        /**
+         * ........
+         * ........
+         * ........
+         * ...rR*..
+         * ........
+         * ........
+         * ........
+         */
+        @Test
+        @DisplayName("가능한 움직임이지만 장애물이 있다면 예외가 발생한다.")
+        void canMove_RookBlocked_ThrownException() {
+            board = new Board(PositionFixture.emptySquares(Map.of(
+                    D4, new Piece(ROOK, WHITE),
+                    E4, new Piece(ROOK, BLACK)
+            )));
+
+            assertThatThrownBy(() -> board.checkMove(D4, F4))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
     }
 
-    @Test
-    @DisplayName("해당 위치의 기물을 가져온다.")
-    void findPieceByPosition() {
-        Position position = new Position(File.A, Rank.ONE);
+    @Nested
+    class KnightTest {
 
-        Piece piece = board.findPieceByPosition(position);
+        private static Set<Position> knightPositions() {
+            return Set.of(B3, C2, B5, F5, C6, E6, E2, F3);
+        }
 
-        assertThat(piece).isEqualTo(new Piece(PieceType.ROOK, Color.WHITE));
+        private static Set<Position> notKnightPositions() {
+            return otherPositions(knightPositions());
+        }
+
+        @BeforeEach
+        void setUp() {
+            board = new Board(PositionFixture.emptySquares(Map.of(D4, new Piece(KNIGHT, WHITE))));
+        }
+
+        /**
+         * ........
+         * ........
+         * ..*.*...
+         * .*...*..
+         * ...n....
+         * .*...*..
+         * ..*.*...
+         * ........
+         */
+        @ParameterizedTest
+        @MethodSource("knightPositions")
+        @DisplayName("장애물이 없고 가능한 움직임이라면 이동할 수 있다.")
+        void canMove_Knight_True(Position targetPosition) {
+            boolean canMove = board.checkMove(D4, targetPosition);
+
+            assertThat(canMove).isTrue();
+        }
+
+        /**
+         * ........
+         * ........
+         * ..*.*...
+         * .*NNN*..
+         * ..NnN...
+         * .*NNN*..
+         * ..*.*...
+         * ........
+         */
+        @ParameterizedTest
+        @MethodSource("knightPositions")
+        @DisplayName("가능한 움직임이라면 장애물이 있어도 이동할 수 있다.")
+        void canMove_KnightJump_True(Position targetPosition) {
+            board = new Board(PositionFixture.emptySquares(Map.of(
+                    D4, new Piece(KNIGHT, WHITE),
+                    C3, new Piece(KNIGHT, BLACK),
+                    C4, new Piece(KNIGHT, BLACK),
+                    C5, new Piece(KNIGHT, BLACK),
+                    D3, new Piece(KNIGHT, BLACK),
+                    D5, new Piece(KNIGHT, BLACK),
+                    E3, new Piece(KNIGHT, BLACK),
+                    E4, new Piece(KNIGHT, BLACK),
+                    E6, new Piece(KNIGHT, BLACK)
+            )));
+            boolean canMove = board.checkMove(D4, targetPosition);
+
+            assertThat(canMove).isTrue();
+        }
+
+        /**
+         * ********
+         * ********
+         * **.*.***
+         * *.***.**
+         * ***n***
+         * *.***.**
+         * **.*.***
+         * ********
+         */
+        @ParameterizedTest
+        @MethodSource("notKnightPositions")
+        @DisplayName("불가능한 움직임이라면 예외가 발생한다.")
+        void canMove_Knight_ExceptionThrown(Position targetPosition) {
+            assertThatThrownBy(() -> board.checkMove(D4, targetPosition))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
     }
 
-    @Test
-    @DisplayName("해당 위치에 기물을 둔다.")
-    void placePiece() {
-        Position position = new Position(File.A, Rank.ONE);
-        Piece expected = new Piece(PieceType.ROOK, Color.WHITE);
+    @Nested
+    class PawnTest {
 
-        board.placePieceByPosition(expected, position);
+        private static List<List<Position>> whitePawnPositions() {
+            return List.of(
+                    List.of(D4, D5),
+                    List.of(D4, D6)
+            );
+        }
 
-        Piece actual = board.findPieceByPosition(position);
-        assertThat(actual).isEqualTo(expected);
-    }
+        private static List<List<Position>> blackPawnPositions() {
+            return List.of(
+                    List.of(D6, D5),
+                    List.of(D6, D4)
+            );
+        }
 
-    @Test
-    @DisplayName("해당 위치의 기물을 없앤다.")
-    void displacePiece() {
-        Position position = new Position(File.A, Rank.ONE);
+        /**
+         * ........
+         * ........
+         * ...*....
+         * ...*....
+         * ...p....
+         * ........
+         * ........
+         * ........
+         */
+        @ParameterizedTest
+        @MethodSource("whitePawnPositions")
+        @DisplayName("장애물이 없고 가능한 움직임이라면 이동할 수 있다.")
+        void canMove_FirstWhitePawn_True(List<Position> positions) {
+            board = new Board(PositionFixture.emptySquares(Map.of(D4, new Pawn(FIRST_PAWN, WHITE))));
+            Position sourcePosition = positions.get(0);
+            Position targetPosition = positions.get(1);
 
-        board.displacePieceByPosition(position);
+            boolean canMove = board.checkMove(sourcePosition, targetPosition);
 
-        Piece actual = board.findPieceByPosition(position);
-        Piece expected = new Piece(PieceType.NONE, Color.NONE);
-        assertThat(actual).isEqualTo(expected);
-    }
+            assertThat(canMove).isTrue();
+        }
 
-    @Test
-    @DisplayName("해당 위치에 다른 기물이 없는 경우 참을 반환한다.")
-    void isNotBlocked_True() {
-        Position source = new Position(File.A, Rank.TWO);
-        Position target = new Position(File.A, Rank.FOUR);
+        /**
+         * ........
+         * ........
+         * ........
+         * ...*....
+         * ...p....
+         * ........
+         * ........
+         * ........
+         */
+        @Test
+        @DisplayName("장애물이 없고 가능한 움직임이라면 이동할 수 있다.")
+        void canMove_WhitePawn_True() {
+            board = new Board(PositionFixture.emptySquares(Map.of(D4, new Pawn(PAWN, WHITE))));
 
-        boolean actual = board.isNotBlocked(source, target);
+            boolean canMove = board.checkMove(D4, D5);
 
-        assertThat(actual).isTrue();
-    }
+            assertThat(canMove).isTrue();
+        }
 
-    @Test
-    @DisplayName("해당 위치에 다른 기물이 있는 경우 거짓을 반환한다.")
-    void isNotBlocked_False() {
-        Position source = new Position(File.A, Rank.ONE);
-        Position target = new Position(File.A, Rank.THREE);
+        /**
+         * ........
+         * ........
+         * ...*....
+         * ........
+         * ...p....
+         * ........
+         * ........
+         * ........
+         */
+        @ParameterizedTest
+        @MethodSource("whitePawnPositions")
+        @DisplayName("장애물이 없지만 불가능한 움직임이라면 예외가 발생한다.")
+        void canMove_WhitePawn_False() {
+            board = new Board(PositionFixture.emptySquares(Map.of(D4, new Pawn(PAWN, WHITE))));
 
-        boolean actual = board.isNotBlocked(source, target);
+            assertThatThrownBy(() -> board.checkMove(D4, D6))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
 
-        assertThat(actual).isFalse();
-    }
+        /**
+         * ........
+         * ........
+         * ...P....
+         * ........
+         * ...p....
+         * ........
+         * ........
+         * ........
+         */
+        @Test
+        @DisplayName("가능한 움직임이지만 장애물이 있다면 예외가 발생한다.")
+        void canMove_FirstWhitePawn_ThrownException() {
+            board = new Board(PositionFixture.emptySquares(Map.of(D4, new Pawn(FIRST_PAWN, WHITE))));
 
-    @Test
-    void placePieceByPosition_FirstPawn_Pawn() {
-        Pawn firstPawn = new Pawn(PieceType.FIRST_PAWN, Color.WHITE);
-        Position position = new Position(File.B, Rank.FIVE);
+            boolean canMove = board.checkMove(D4, D6);
 
-        board.placePieceByPosition(firstPawn, position);
+            assertThat(canMove).isTrue();
+        }
 
-        assertThat(board.findPieceByPosition(new Position(File.B, Rank.FIVE)))
-                .isEqualTo(new Pawn(PieceType.PAWN, Color.WHITE));
+        /**
+         * ........
+         * ........
+         * ........
+         * ...P....
+         * ...p....
+         * ........
+         * ........
+         * ........
+         */
+        @ParameterizedTest
+        @EnumSource(names = {"PAWN", "FIRST_PAWN"})
+        @DisplayName("가능한 움직임이지만 장애물이 있다면 예외가 발생한다.")
+        void canMove_WhitePawn_ThrownException(PieceType pawn) {
+            board = new Board(PositionFixture.emptySquares(Map.of(D4, new Pawn(pawn, WHITE))));
+
+            boolean canMove = board.checkMove(D4, D5);
+
+            assertThat(canMove).isTrue();
+        }
+
+        /**
+         * ........
+         * ........
+         * ...p....
+         * ...*....
+         * ...*....
+         * ........
+         * ........
+         * ........
+         */
+        @ParameterizedTest
+        @MethodSource("blackPawnPositions")
+        @DisplayName("장애물이 없고 가능한 움직임이라면 이동할 수 있다.")
+        void canMove_FirstBlackPawn_True(List<Position> positions) {
+            board = new Board(PositionFixture.emptySquares(Map.of(D6, new Pawn(FIRST_PAWN, BLACK))));
+            Position sourcePosition = positions.get(0);
+            Position targetPosition = positions.get(1);
+
+            boolean canMove = board.checkMove(sourcePosition, targetPosition);
+
+            assertThat(canMove).isTrue();
+        }
+
+        /**
+         * ........
+         * ........
+         * ........
+         * ...p....
+         * ...*....
+         * ........
+         * ........
+         * ........
+         */
+        @Test
+        @DisplayName("장애물이 없고 가능한 움직임이라면 이동할 수 있다.")
+        void canMove_BlackPawn_True() {
+            board = new Board(PositionFixture.emptySquares(Map.of(D6, new Pawn(PAWN, BLACK))));
+
+            boolean canMove = board.checkMove(D6, D5);
+
+            assertThat(canMove).isTrue();
+        }
+
+        /**
+         * ........
+         * ........
+         * ...p....
+         * ........
+         * ...*....
+         * ........
+         * ........
+         * ........
+         */
+        @ParameterizedTest
+        @MethodSource("blackPawnPositions")
+        @DisplayName("장애물이 없지만 불가능한 움직임이라면 예외가 발생한다.")
+        void canMove_BlackPawn_False() {
+            board = new Board(PositionFixture.emptySquares(Map.of(D6, new Pawn(PAWN, BLACK))));
+
+            assertThatThrownBy(() -> board.checkMove(D6, D4))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        /**
+         * ........
+         * ........
+         * ...P....
+         * ........
+         * ...p....
+         * ........
+         * ........
+         * ........
+         */
+        @Test
+        @DisplayName("가능한 움직임이지만 장애물이 있다면 예외가 발생한다.")
+        void canMove_FirstBlackPawn_ThrownException() {
+            board = new Board(PositionFixture.emptySquares(Map.of(D6, new Pawn(FIRST_PAWN, BLACK))));
+
+            boolean canMove = board.checkMove(D6, D4);
+
+            assertThat(canMove).isTrue();
+        }
+
+        /**
+         * ........
+         * ........
+         * ........
+         * ...P....
+         * ...p....
+         * ........
+         * ........
+         * ........
+         */
+        @ParameterizedTest
+        @EnumSource(names = {"PAWN", "FIRST_PAWN"})
+        @DisplayName("가능한 움직임이지만 장애물이 있다면 예외가 발생한다.")
+        void canMove_BlackPawn_ThrownException(PieceType pawn) {
+            board = new Board(PositionFixture.emptySquares(Map.of(D6, new Pawn(pawn, BLACK))));
+
+            boolean canMove = board.checkMove(D6, D5);
+
+            assertThat(canMove).isTrue();
+        }
     }
 }
