@@ -6,7 +6,7 @@ import java.util.function.BiPredicate;
 
 public enum AttackTactic {
 
-    DIAGONAL(Position::canAttackDiagonal),
+    DIAGONAL((source, target) -> source.isDiagonal(target, 1)),
     NOT_ATTACK((source, target) -> false);
 
     private final BiPredicate<Position, Position> tactic;

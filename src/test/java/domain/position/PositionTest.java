@@ -168,25 +168,17 @@ public class PositionTest {
     @Nested
     class ForwardPositionTest {
 
-        private static Stream<Arguments> provideFileAndRank() {
-            return Stream.of(
-                    Arguments.of(File.D, Rank.THREE),
-                    Arguments.of(File.D, Rank.FOUR)
-            );
-        }
-
-        @ParameterizedTest
-        @MethodSource("provideFileAndRank")
-        @DisplayName("처음에 두 위치가 한 칸 또는 두 칸 앞에 존재하면 참을 반환한다.")
-        void isForwardStraight_First_True(File file, Rank rank) {
+        @Test
+        @DisplayName("두 위치가 한 칸 앞에 존재하면 참을 반환한다.")
+        void isForwardStraight_First_True() {
             Position source = new Position(File.D, Rank.TWO);
-            Position target = new Position(file, rank);
+            Position target = new Position(File.D, Rank.THREE);
 
             assertThat(source.isForwardStraight(target)).isTrue();
         }
 
         @Test
-        @DisplayName("처음에 두 위치가 한 칸 또는 두 칸 앞에 존재하지 않으면 거짓을 반환한다.")
+        @DisplayName("두 위치가 한 칸 앞에 존재하지 않으면 거짓을 반환한다.")
         void isForwardStraight_First_False() {
             Position source = new Position(File.D, Rank.FOUR);
             Position target = new Position(File.D, Rank.EIGHT);

@@ -1,6 +1,7 @@
 package domain.position;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,6 +29,13 @@ public class Position {
         return fileDistance == rankDistance;
     }
 
+    public boolean isDiagonal(Position target, int... steps) {
+        int fileDistance = file.distance(target.file);
+        int rankDistance = rank.distance(target.rank);
+        return Arrays.stream(steps)
+                .allMatch(step -> step == fileDistance && fileDistance == rankDistance);
+    }
+
     public boolean isStraight(Position target) {
         return file.isSame(target.file) || rank.isSame(target.rank);
     }
@@ -53,21 +61,13 @@ public class Position {
     }
 
     public boolean isForwardStraight(Position target) {
+        return isForwardStraight(target, 1);
+    }
+
+    public boolean isForwardStraight(Position target, int... steps) {
         int forwardDistance = rank.distance(target.rank);
-        if (isFirstMove()) {
-            return (isOneStep(forwardDistance) || isTwoStep(forwardDistance)) && file.isSame(target.file);
-        }
-        return isOneStep(forwardDistance) && file.isSame(target.file);
-    }
-
-    private boolean isFirstMove() {
-        return rank.isSame(Rank.TWO) || rank.isSame(Rank.SEVEN);
-    }
-
-    public boolean canAttackDiagonal(Position target) {
-        int rankDistance = rank.distance(target.rank);
-        int fileDistance = file.distance(target.file);
-        return isOneStep(rankDistance) && isOneStep(fileDistance);
+        return Arrays.stream(steps)
+                .anyMatch(step -> step == forwardDistance && file.isSame(target.file));
     }
 
     public List<Position> findBetweenStraightPositions(Position target) {
