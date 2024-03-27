@@ -31,7 +31,7 @@ public class Piece {
     }
 
     public boolean canAttack(Position source, Position target) {
-        return pieceType.canAttack(source, target);
+        return pieceType.canAttack(source, target) && color.canMove(source, target);
     }
 
     public boolean isOpposite(Piece targetPiece) {
