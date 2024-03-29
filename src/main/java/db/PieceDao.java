@@ -1,7 +1,11 @@
 package db;
 
+import domain.piece.Color;
+import domain.piece.PieceType;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PieceDao {
@@ -20,5 +24,23 @@ public class PieceDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public PieceDto findPieceByPosition(PositionDto positionDto) {
+        String query = "SELECT * FROM pieces WHERE x = ? AND y = ?";
+        try (Connection connection = chessDatabase.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, positionDto.file().name());
+            preparedStatement.setString(2, positionDto.rank().name());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                PieceType pieceType = PieceType.valueOf(resultSet.getString("piece_type"));
+                Color color = Color.valueOf(resultSet.getString("color"));
+                return new PieceDto(pieceType, color, positionDto);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }
