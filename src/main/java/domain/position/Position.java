@@ -1,9 +1,7 @@
 package domain.position;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Position {
 
@@ -91,6 +89,12 @@ public class Position {
             positions.add(position);
         }
         return positions;
+    }
+
+    public Set<Position> findSameFilePositions() {
+        return Arrays.stream(Rank.values())
+                .map(rank -> new Position(this.file, rank))
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private boolean isNoneStep(int rankDistance) {
