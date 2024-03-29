@@ -1,6 +1,6 @@
 USE chess;
 
-CREATE TABLE pieces
+CREATE TABLE squares
 (
     piece_type VARCHAR(10) NOT NULL,
     color      VARCHAR(5)  NOT NULL,

@@ -1,8 +1,6 @@
 package db;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static domain.piece.Color.BLACK;
 import static domain.piece.Color.WHITE;
@@ -12,18 +10,19 @@ import static domain.position.File.A;
 import static domain.position.Rank.ONE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PieceDaoTest {
+@TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
+class SquareDaoTest {
 
-    private final PieceDao pieceDao = new PieceDao();
+    private final SquareDao squareDao = new SquareDao();
 
     @Test
     @Order(1)
     @DisplayName("기물과 위치를 저장한다.")
     void addPosition() {
         PositionDto positionDto = new PositionDto(A, ONE);
-        PieceDto pieceDto = new PieceDto(QUEEN, WHITE, positionDto);
+        SquareDto squareDto = new SquareDto(QUEEN, WHITE, positionDto);
 
-        int queryCount = pieceDao.addPiece(pieceDto);
+        int queryCount = squareDao.addSquare(squareDto);
 
         assertThat(queryCount).isEqualTo(1);
     }
@@ -34,9 +33,9 @@ class PieceDaoTest {
     void findPieceByPosition() {
         PositionDto positionDto = new PositionDto(A, ONE);
 
-        PieceDto pieceDto = pieceDao.findPieceByPosition(positionDto);
+        SquareDto squareDto = squareDao.findPieceByPosition(positionDto);
 
-        assertThat(pieceDto).isEqualTo(new PieceDto(QUEEN, WHITE, positionDto));
+        assertThat(squareDto).isEqualTo(new SquareDto(QUEEN, WHITE, positionDto));
     }
 
     @Test
@@ -44,9 +43,9 @@ class PieceDaoTest {
     @DisplayName("특정 위치의 기물을 변경한다.")
     void updatePiecePosition() {
         PositionDto positionDto = new PositionDto(A, ONE);
-        PieceDto pieceDto = new PieceDto(KING, BLACK, positionDto);
+        SquareDto squareDto = new SquareDto(KING, BLACK, positionDto);
 
-        int queryCount = pieceDao.updatePiecePosition(pieceDto);
+        int queryCount = squareDao.updateSqaure(squareDto);
 
         assertThat(queryCount).isEqualTo(1);
     }
@@ -55,7 +54,7 @@ class PieceDaoTest {
     @Order(4)
     @DisplayName("모든 기물과 위치를 삭제한다.")
     void deleteAll() {
-        int queryCount = pieceDao.deleteAll();
+        int queryCount = squareDao.deleteAll();
 
         assertThat(queryCount).isEqualTo(1);
     }
