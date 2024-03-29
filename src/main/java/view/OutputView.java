@@ -43,13 +43,14 @@ public class OutputView {
     }
 
     public void printScore(Score... scores) {
+        System.out.println("-------- 점수 --------");
         Arrays.stream(scores)
                 .forEach(score -> System.out.println(ScoreOutput.asString(score)));
         System.out.println();
     }
 
     public void printWinner(Color loserColor, Color winnerColor) {
-        System.out.println(loserColor + "킹이 잡혔습니다.");
+        System.out.println(loserColor + " 킹이 잡혔습니다.");
         System.out.println("우승 진영은 " + winnerColor + "입니다.");
     }
 
