@@ -51,13 +51,13 @@ public class Board {
         turn.swap();
     }
 
-    public long countSameFilePawn(Color color) {
+    public int countSameFilePawn(Color color) {
         long count = 0;
         for (Position position : RANK_ONE_POSITIONS_CACHE) {
             long countOfSameFile = getPawnCountOfSameFile(color, position);
             count = getPawnCount(countOfSameFile, count);
         }
-        return count;
+        return (int) count;
     }
 
     private long getPawnCount(long countOfSameFile, long count) {

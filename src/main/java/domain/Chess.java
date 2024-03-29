@@ -29,7 +29,9 @@ public class Chess {
 
     public Score score(Color color) {
         List<PieceType> pieceTypes = board.pieceTypes(color);
-        return new Score(color, scoreCalculator.sumValues(pieceTypes));
+        int countSameFilePawn = board.countSameFilePawn(color);
+        float totalValue = scoreCalculator.sumValues(pieceTypes, countSameFilePawn);
+        return new Score(color, totalValue);
     }
 
     public Board getBoard() {
