@@ -4,13 +4,22 @@ import domain.piece.Color;
 import domain.piece.Pawn;
 import domain.piece.Piece;
 import domain.piece.PieceType;
+import domain.position.File;
 import domain.position.Position;
+import domain.position.Rank;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Board {
+
+    private static final Set<Position> RANK_ONE_POSITIONS_CACHE;
+
+    static {
+        RANK_ONE_POSITIONS_CACHE = Arrays.stream(File.values())
+                .map(file -> new Position(file, Rank.ONE))
+                .collect(Collectors.toSet());
+    }
 
     private final Map<Position, Piece> squares;
     private final Turn turn;
@@ -40,6 +49,31 @@ public class Board {
         placePieceByPosition(sourcePiece, targetPosition);
         displacePieceByPosition(sourcePosition);
         turn.swap();
+    }
+
+    public long countSameFilePawn(Color color) {
+        long count = 0;
+        for (Position position : RANK_ONE_POSITIONS_CACHE) {
+            long countOfSameFile = getPawnCountOfSameFile(color, position);
+            count = getPawnCount(countOfSameFile, count);
+        }
+        return count;
+    }
+
+    private long getPawnCount(long countOfSameFile, long count) {
+        if (countOfSameFile > 1) {
+            count += countOfSameFile;
+        }
+        return count;
+    }
+
+    private long getPawnCountOfSameFile(Color color, Position position) {
+        Set<Position> sameFilePositions = position.findSameFilePositions();
+        return sameFilePositions.stream()
+                .map(squares::get)
+                .filter(piece -> piece.isSameColor(color))
+                .filter(piece -> piece.isSameType(PieceType.PAWN, PieceType.FIRST_PAWN))
+                .count();
     }
 
     public List<PieceType> pieceTypes(Color color) {

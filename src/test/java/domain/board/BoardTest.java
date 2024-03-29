@@ -43,6 +43,21 @@ public class BoardTest {
         assertThat(pieceTypes).containsOnly(QUEEN, KING, ROOK, ROOK);
     }
 
+    @Test
+    @DisplayName("세로줄에 같은 색의 폰의 개수를 구한다.")
+    void countSameFilePawn_White_2() {
+        board = new Board(PositionFixture.emptySquares(Map.of(
+                A3, new Pawn(PAWN, WHITE),
+                A4, new Pawn(FIRST_PAWN, WHITE),
+                C4, new Pawn(PAWN, WHITE),
+                A1, new Piece(KING, WHITE)
+        )));
+
+        long count = board.countSameFilePawn(WHITE);
+
+        assertThat(count).isEqualTo(2);
+    }
+
     @Nested
     class RookTest {
 
