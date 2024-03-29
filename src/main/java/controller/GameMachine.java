@@ -3,6 +3,7 @@ package controller;
 import domain.Chess;
 import domain.command.Command;
 import domain.command.PlayCommand;
+import domain.piece.Color;
 import view.InputView;
 import view.OutputView;
 import view.mapper.CommandInput;
@@ -26,6 +27,12 @@ public class GameMachine {
         PlayCommand playCommand = requestPlayCommand();
         if (playCommand.isMove()) {
             movePieceByCommand(chess, playCommand);
+        }
+        if (playCommand.isStatus()) {
+            float whiteScore = chess.score(Color.WHITE);
+            float blackScore = chess.score(Color.BLACK);
+            outputView.printScore(whiteScore, blackScore);
+            play(chess);
         }
     }
 

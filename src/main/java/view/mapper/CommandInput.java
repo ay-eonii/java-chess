@@ -12,7 +12,7 @@ public enum CommandInput {
     START(Command.START, Pattern.compile("start")),
     MOVE(Command.MOVE, Pattern.compile("^move [a-h][1-8] [a-h][1-8]$")),
     END(Command.END, Pattern.compile("end")),
-    STATUS(Command.START, Pattern.compile("status"));
+    STATUS(Command.STATUS, Pattern.compile("status"));
 
     private final Command command;
     private final Pattern pattern;
@@ -36,9 +36,9 @@ public enum CommandInput {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 올바른 명령어를 입력해주세요."))
                 .command;
-        if (command.isNotMove()) {
-            return new PlayCommand(command);
+        if (command.isMove()) {
+            return new PlayCommand(command, new PositionCommand(input.split(" ", 2)[1]));
         }
-        return new PlayCommand(command, new PositionCommand(input.split(" ", 2)[1]));
+        return new PlayCommand(command);
     }
 }
