@@ -27,6 +27,22 @@ public class BoardTest {
 
     private Board board;
 
+    @Test
+    @DisplayName("특정 진영의 모든 기물 타입을 구한다.")
+    void pieceTypes_White() {
+        board = new Board(PositionFixture.emptySquares(Map.of(
+                D4, new Piece(QUEEN, WHITE),
+                A4, new Piece(KING, WHITE),
+                C4, new Piece(ROOK, WHITE),
+                C3, new Piece(ROOK, WHITE),
+                D5, new Piece(ROOK, BLACK)
+        )));
+
+        List<PieceType> pieceTypes = board.pieceTypes(WHITE);
+
+        assertThat(pieceTypes).containsOnly(QUEEN, KING, ROOK, ROOK);
+    }
+
     @Nested
     class RookTest {
 

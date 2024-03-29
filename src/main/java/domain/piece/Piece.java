@@ -51,8 +51,16 @@ public class Piece {
         return color != Color.NONE && color != targetPiece.color;
     }
 
+    public boolean isSameColor(Color color) {
+        return this.color == color;
+    }
+
     public void checkSelfTurn(Turn turn) {
         turn.validate(color);
+    }
+
+    public PieceType type() {
+        return pieceType;
     }
 
     @Override

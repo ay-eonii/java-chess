@@ -42,6 +42,13 @@ public class Board {
         turn.swap();
     }
 
+    public List<PieceType> pieceTypes(Color color) {
+        return squares.values().stream()
+                .filter(piece -> piece.isSameColor(color))
+                .map(Piece::type)
+                .toList();
+    }
+
     private boolean canMove(Position sourcePosition, Position targetPosition) {
         Piece sourcePiece = findPieceByPosition(sourcePosition);
         Piece targetPiece = findPieceByPosition(targetPosition);
