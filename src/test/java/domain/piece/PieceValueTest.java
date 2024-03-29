@@ -51,24 +51,13 @@ class PieceValueTest {
 
     @ParameterizedTest
     @EnumSource(names = {"PAWN", "FIRST_PAWN"})
-    @DisplayName("초기 Pawn의 기본 점수는 1점이다.")
+    @DisplayName("초기 Pawn의 점수는 1점이다.")
     void score_FirstPawn_1(PieceType pieceType) {
         PieceValue pieceValue = new PieceValue();
 
         float score = pieceValue.value(pieceType);
 
         assertThat(score).isEqualTo(1f);
-    }
-
-    @ParameterizedTest
-    @EnumSource(names = {"PAWN", "FIRST_PAWN"})
-    @DisplayName("Pawn의 특별 점수는 0.5점이다.")
-    void score_SpecialPawn_0_5(PieceType pieceType) {
-        PieceValue pieceValue = new PieceValue();
-
-        float score = pieceValue.value(pieceType, true);
-
-        assertThat(score).isEqualTo(0.5f);
     }
 
     @Test

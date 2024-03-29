@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static domain.piece.PieceType.QUEEN;
-import static domain.piece.PieceType.ROOK;
+import static domain.piece.PieceType.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScoreCalculatorTest {
@@ -20,7 +19,7 @@ public class ScoreCalculatorTest {
         );
         ScoreCalculator scoreCalculator = new ScoreCalculator();
 
-        float totalValue = scoreCalculator.sumValues(pieces);
+        float totalValue = scoreCalculator.sumValues(pieces, 0);
 
         assertThat(totalValue).isEqualTo(9f);
     }
@@ -33,21 +32,34 @@ public class ScoreCalculatorTest {
         );
         ScoreCalculator scoreCalculator = new ScoreCalculator();
 
-        float totalValue = scoreCalculator.sumValues(pieces);
+        float totalValue = scoreCalculator.sumValues(pieces, 0);
 
         assertThat(totalValue).isEqualTo(14f);
     }
 
     @Test
     @DisplayName("같은 기물 두 개의 점수를 합산한다.")
-    void sumValues_Rook_Rook_() {
+    void sumValues_Rook_Rook_10() {
         List<PieceType> pieces = List.of(
                 ROOK, ROOK
         );
         ScoreCalculator scoreCalculator = new ScoreCalculator();
 
-        float totalValue = scoreCalculator.sumValues(pieces);
+        float totalValue = scoreCalculator.sumValues(pieces, 0);
 
         assertThat(totalValue).isEqualTo(10f);
+    }
+
+    @Test
+    @DisplayName("같은 파일에 폰이 두개라면 개당 0.5점으로 계산한다.")
+    void sumValues_Pawn_Pawn_2_2() {
+        List<PieceType> pieces = List.of(
+                PAWN, PAWN, FIRST_PAWN
+        );
+        ScoreCalculator scoreCalculator = new ScoreCalculator();
+
+        float totalValue = scoreCalculator.sumValues(pieces, 2);
+
+        assertThat(totalValue).isEqualTo(2f);
     }
 }
