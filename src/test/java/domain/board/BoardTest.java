@@ -1,5 +1,6 @@
 package domain.board;
 
+import domain.piece.Color;
 import domain.piece.Pawn;
 import domain.piece.Piece;
 import domain.piece.PieceType;
@@ -56,6 +57,22 @@ public class BoardTest {
         long count = board.countSameFilePawn(WHITE);
 
         assertThat(count).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("킹이 잡힌 진영을 찾는다.")
+    void checkDeadKing() {
+        board = new Board(PositionFixture.emptySquares(Map.of(
+                D4, new Piece(QUEEN, WHITE),
+                A4, new Piece(KING, WHITE),
+                C4, new Piece(ROOK, WHITE),
+                C3, new Piece(ROOK, WHITE),
+                D5, new Piece(ROOK, BLACK)
+        )));
+
+        Color deadKing = board.findDeadKing();
+
+        assertThat(deadKing).isEqualTo(BLACK);
     }
 
     @Nested

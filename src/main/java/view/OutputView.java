@@ -48,6 +48,11 @@ public class OutputView {
         System.out.println();
     }
 
+    public void printWinner(Color loserColor, Color winnerColor) {
+        System.out.println(loserColor + "킹이 잡혔습니다.");
+        System.out.println("우승 진영은 " + winnerColor + "입니다.");
+    }
+
     private enum PieceOutput {
 
         BISHOP(List.of(PieceType.BISHOP), "B"),

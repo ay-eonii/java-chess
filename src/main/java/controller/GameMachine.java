@@ -25,16 +25,26 @@ public class GameMachine {
     }
 
     private void play(Chess chess) {
+        Color deadKingColor = chess.findDeadKing();
+        if (deadKingColor != Color.NONE) {
+            outputView.printWinner(deadKingColor, deadKingColor.opposite());
+            checkScore(chess);
+            return;
+        }
         PlayCommand playCommand = requestPlayCommand();
         if (playCommand.isMove()) {
             movePieceByCommand(chess, playCommand);
         }
         if (playCommand.isStatus()) {
-            Score whiteScore = chess.score(Color.WHITE);
-            Score blackScore = chess.score(Color.BLACK);
-            outputView.printScore(whiteScore, blackScore);
+            checkScore(chess);
             play(chess);
         }
+    }
+
+    private void checkScore(Chess chess) {
+        Score whiteScore = chess.score(Color.WHITE);
+        Score blackScore = chess.score(Color.BLACK);
+        outputView.printScore(whiteScore, blackScore);
     }
 
     private void movePieceByCommand(Chess chess, PlayCommand playCommand) {

@@ -34,6 +34,10 @@ public class Chess {
         return new Score(color, totalValue);
     }
 
+    public Color findDeadKing() {
+        return board.findDeadKing();
+    }
+
     public Board getBoard() {
         return board;
     }

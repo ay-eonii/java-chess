@@ -83,6 +83,16 @@ public class Board {
                 .toList();
     }
 
+    public Color findDeadKing() {
+        if (!squares.containsValue(new Piece(PieceType.KING, Color.WHITE))) {
+            return Color.WHITE;
+        }
+        if (!squares.containsValue(new Piece(PieceType.KING, Color.BLACK))) {
+            return Color.BLACK;
+        }
+        return Color.NONE;
+    }
+
     private boolean canMove(Position sourcePosition, Position targetPosition) {
         Piece sourcePiece = findPieceByPosition(sourcePosition);
         Piece targetPiece = findPieceByPosition(targetPosition);
