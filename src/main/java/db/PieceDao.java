@@ -12,7 +12,7 @@ public class PieceDao {
 
     private final ChessDatabase chessDatabase = new ChessDatabase();
 
-    public void addPiece(PieceDto pieceDto) {
+    public int addPiece(PieceDto pieceDto) {
         String query = "INSERT INTO pieces VALUES(?, ?, ?, ?)";
         try (Connection connection = chessDatabase.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -20,7 +20,7 @@ public class PieceDao {
             preparedStatement.setString(2, pieceDto.color().name());
             preparedStatement.setString(3, pieceDto.positionDto().file().name());
             preparedStatement.setString(4, pieceDto.positionDto().rank().name());
-            preparedStatement.executeUpdate();
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -42,5 +42,29 @@ public class PieceDao {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public int updatePiecePosition(PieceDto pieceDto) {
+        String query = "UPDATE pieces SET piece_type = ?, color = ? WHERE x = ? AND y = ?";
+        try (Connection connection = chessDatabase.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, pieceDto.pieceType().name());
+            preparedStatement.setString(2, pieceDto.color().name());
+            preparedStatement.setString(3, pieceDto.positionDto().file().name());
+            preparedStatement.setString(4, pieceDto.positionDto().rank().name());
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int deleteAll() {
+        String query = "DELETE FROM pieces";
+        try (Connection connection = chessDatabase.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
