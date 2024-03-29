@@ -3,6 +3,7 @@ package domain.piece;
 import domain.board.Turn;
 import domain.position.Position;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Piece {
@@ -15,8 +16,9 @@ public class Piece {
         this.color = color;
     }
 
-    public boolean isSameType(PieceType pieceType) {
-        return this.pieceType == pieceType;
+    public boolean isSameType(PieceType... pieceTypes) {
+        return Arrays.stream(pieceTypes)
+                .anyMatch(pieceType -> this.pieceType == pieceType);
     }
 
     public boolean isNotBlank() {
