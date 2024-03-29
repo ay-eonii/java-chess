@@ -5,6 +5,7 @@ import domain.board.BoardCreator;
 import domain.piece.Color;
 import domain.piece.PieceType;
 import domain.position.Position;
+import domain.score.Score;
 import domain.score.ScoreCalculator;
 
 import java.util.List;
@@ -26,9 +27,9 @@ public class Chess {
         }
     }
 
-    public float score(Color color) {
+    public Score score(Color color) {
         List<PieceType> pieceTypes = board.pieceTypes(color);
-        return scoreCalculator.sumValues(pieceTypes);
+        return new Score(color, scoreCalculator.sumValues(pieceTypes));
     }
 
     public Board getBoard() {

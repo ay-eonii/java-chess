@@ -1,8 +1,10 @@
 package view;
 
 import domain.board.Board;
+import domain.piece.Color;
 import domain.piece.Piece;
 import domain.piece.PieceType;
+import domain.score.Score;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,9 +42,9 @@ public class OutputView {
         System.out.println(errorMessage);
     }
 
-    public void printScore(float whiteScore, float blackScore) {
-        System.out.println("흰색(소문자) = " + whiteScore + "점");
-        System.out.println("검은색(대문자) = " + blackScore + "점");
+    public void printScore(Score... scores) {
+        Arrays.stream(scores)
+                .forEach(score -> System.out.println(ScoreOutput.asString(score)));
         System.out.println();
     }
 
@@ -79,6 +81,27 @@ public class OutputView {
         private static boolean isAnyMatch(Piece piece, List<PieceType> pieceTypes) {
             return pieceTypes.stream()
                     .anyMatch(piece::isSameType);
+        }
+    }
+
+    private enum ScoreOutput {
+        WHITE_SCORE(Color.WHITE, "흰색(소문자) = %.1f점"),
+        BLACK_SCORE(Color.BLACK, "검은색(대문자) = %.1f점");
+
+        private final Color color;
+        private final String format;
+
+        ScoreOutput(Color color, String format) {
+            this.color = color;
+            this.format = format;
+        }
+
+        private static String asString(Score score) {
+            return Arrays.stream(values())
+                    .filter(scoreOutput -> scoreOutput.color == score.color())
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 색입니다."))
+                    .format.formatted(score.totalValue());
         }
     }
 }
