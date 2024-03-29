@@ -40,6 +40,12 @@ public class OutputView {
         System.out.println(errorMessage);
     }
 
+    public void printScore(float whiteScore, float blackScore) {
+        System.out.println("흰색(소문자) = " + whiteScore + "점");
+        System.out.println("검은색(대문자) = " + blackScore + "점");
+        System.out.println();
+    }
+
     private enum PieceOutput {
 
         BISHOP(List.of(PieceType.BISHOP), "B"),
