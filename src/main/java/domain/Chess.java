@@ -45,4 +45,8 @@ public class Chess {
     public void update() {
         board.update();
     }
+
+    public void reset() {
+        board.reset();
+    }
 }

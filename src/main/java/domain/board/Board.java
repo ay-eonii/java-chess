@@ -15,12 +15,13 @@ public class Board {
 
     public Board(Map<Position, Piece> squares) {
         this.squares = new Squares(squares);
-        this.turn = new Turn(Color.WHITE);
+        this.turn = new Turn();
+        turn.save();
     }
 
     public Board() {
         this.squares = new Squares();
-        this.turn = new Turn(Color.WHITE);
+        this.turn = new Turn();
     }
 
     public boolean hasExistingBoard() {
@@ -63,5 +64,11 @@ public class Board {
 
     public void update() {
         squares.update();
+        turn.update();
+    }
+
+    public void reset() {
+        squares.reset();
+        turn.reset();
     }
 }

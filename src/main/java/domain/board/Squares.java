@@ -182,4 +182,8 @@ public class Squares {
             squareDao.updateSqaure(squareDto);
         }
     }
+
+    public void reset() {
+        squareDao.deleteAll();
+    }
 }

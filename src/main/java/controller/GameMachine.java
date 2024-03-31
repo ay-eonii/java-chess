@@ -30,6 +30,7 @@ public class GameMachine {
         if (deadKingColor != Color.NONE) {
             outputView.printWinner(deadKingColor, deadKingColor.opposite());
             checkScore(chess);
+            chess.reset();
             return;
         }
         PlayCommand playCommand = requestPlayCommand();
