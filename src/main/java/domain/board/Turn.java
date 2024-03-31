@@ -19,7 +19,6 @@ public class Turn {
     public Turn() {
         this.turnDao = new TurnDao();
         this.color = initColor();
-        save();
     }
 
     private Color initColor() {
