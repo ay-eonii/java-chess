@@ -18,6 +18,15 @@ public class Board {
         this.turn = new Turn(Color.WHITE);
     }
 
+    public Board() {
+        this.squares = new Squares();
+        this.turn = new Turn(Color.WHITE);
+    }
+
+    public boolean hasExistingBoard() {
+        return !squares.isEmpty();
+    }
+
     public void checkTurn(Position sourcePosition) {
         Piece sourcePiece = squares.findPieceByPosition(sourcePosition);
         sourcePiece.checkSelfTurn(turn);
