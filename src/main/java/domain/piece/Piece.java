@@ -16,6 +16,13 @@ public class Piece {
         this.color = color;
     }
 
+    public static Piece from(PieceType pieceType, Color color) {
+        if (pieceType.isFirstPawn()) {
+            return new Pawn(pieceType, color);
+        }
+        return new Piece(pieceType, color);
+    }
+
     public boolean isSameType(PieceType... pieceTypes) {
         return Arrays.stream(pieceTypes)
                 .anyMatch(pieceType -> this.pieceType == pieceType);
@@ -63,6 +70,10 @@ public class Piece {
 
     public PieceType type() {
         return pieceType;
+    }
+
+    public Color color() {
+        return color;
     }
 
     @Override
