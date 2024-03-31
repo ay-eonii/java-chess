@@ -1,5 +1,6 @@
 package domain.piece;
 
+import db.PieceDto;
 import domain.board.Turn;
 import domain.position.Position;
 
@@ -21,6 +22,10 @@ public class Piece {
             return new Pawn(pieceType, color);
         }
         return new Piece(pieceType, color);
+    }
+
+    public PieceDto createDto() {
+        return new PieceDto(pieceType, color);
     }
 
     public boolean isSameType(PieceType... pieceTypes) {

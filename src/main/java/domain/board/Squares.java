@@ -1,5 +1,6 @@
 package domain.board;
 
+import db.PieceDto;
 import db.PositionDto;
 import db.SquareDao;
 import db.SquareDto;
@@ -51,7 +52,10 @@ public class Squares {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(
                         squareDto -> new Position(squareDto.positionDto()),
-                        squareDto -> Piece.from(squareDto.pieceType(), squareDto.color()),
+                        squareDto -> {
+                            PieceDto pieceDto = squareDto.pieceDto();
+                            return Piece.from(pieceDto.pieceType(), pieceDto.color());
+                        },
                         (position, piece) -> position,
                         LinkedHashMap::new
                 ));
@@ -168,8 +172,8 @@ public class Squares {
     public void save() {
         for (Map.Entry<Position, Piece> square : squares.entrySet()) {
             PositionDto positionDto = square.getKey().positionDto();
-            Piece piece = square.getValue();
-            SquareDto squareDto = new SquareDto(piece.type(), piece.color(), positionDto);
+            PieceDto pieceDto = square.getValue().createDto();
+            SquareDto squareDto = new SquareDto(pieceDto, positionDto);
             squareDao.addSquare(squareDto);
         }
     }
@@ -177,8 +181,8 @@ public class Squares {
     public void update() {
         for (Position position : ALL_POSITIONS_CACHE) {
             PositionDto positionDto = position.positionDto();
-            Piece piece = squares.get(position);
-            SquareDto squareDto = new SquareDto(piece.type(), piece.color(), positionDto);
+            PieceDto pieceDto = squares.get(position).createDto();
+            SquareDto squareDto = new SquareDto(pieceDto, positionDto);
             squareDao.updateSqaure(squareDto);
         }
     }

@@ -20,11 +20,13 @@ class SquareDaoTest {
     @DisplayName("기물과 위치를 저장한다.")
     void addPosition() {
         PositionDto positionDto = new PositionDto(A, ONE);
-        SquareDto squareDto = new SquareDto(QUEEN, WHITE, positionDto);
+        PieceDto pieceDto = new PieceDto(QUEEN, WHITE);
+        SquareDto squareDto = new SquareDto(pieceDto, positionDto);
 
         int queryCount = squareDao.addSquare(squareDto);
 
         assertThat(queryCount).isEqualTo(1);
+
     }
 
     @Test
@@ -35,7 +37,8 @@ class SquareDaoTest {
 
         SquareDto squareDto = squareDao.findPieceByPosition(positionDto);
 
-        assertThat(squareDto).isEqualTo(new SquareDto(QUEEN, WHITE, positionDto));
+        PieceDto pieceDto = new PieceDto(QUEEN, WHITE);
+        assertThat(squareDto).isEqualTo(new SquareDto(pieceDto, positionDto));
     }
 
     @Test
@@ -43,7 +46,8 @@ class SquareDaoTest {
     @DisplayName("특정 위치의 기물을 변경한다.")
     void updatePiecePosition() {
         PositionDto positionDto = new PositionDto(A, ONE);
-        SquareDto squareDto = new SquareDto(KING, BLACK, positionDto);
+        PieceDto pieceDto = new PieceDto(KING, BLACK);
+        SquareDto squareDto = new SquareDto(pieceDto, positionDto);
 
         int queryCount = squareDao.updateSqaure(squareDto);
 

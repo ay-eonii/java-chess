@@ -16,10 +16,13 @@ public class SquareDao {
         String query = "INSERT INTO squares VALUES(?, ?, ?, ?)";
         try (Connection connection = chessDatabase.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, squareDto.pieceType().name());
-            preparedStatement.setString(2, squareDto.color().name());
-            preparedStatement.setString(3, squareDto.positionDto().file().name());
-            preparedStatement.setString(4, squareDto.positionDto().rank().name());
+            PieceDto pieceDto = squareDto.pieceDto();
+            preparedStatement.setString(1, pieceDto.pieceType().name());
+            preparedStatement.setString(2, pieceDto.color().name());
+
+            PositionDto positionDto = squareDto.positionDto();
+            preparedStatement.setString(3, positionDto.file().name());
+            preparedStatement.setString(4, positionDto.rank().name());
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -36,7 +39,8 @@ public class SquareDao {
             if (resultSet.next()) {
                 PieceType pieceType = PieceType.valueOf(resultSet.getString("piece_type"));
                 Color color = Color.valueOf(resultSet.getString("color"));
-                return new SquareDto(pieceType, color, positionDto);
+                PieceDto pieceDto = new PieceDto(pieceType, color);
+                return new SquareDto(pieceDto, positionDto);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -48,10 +52,13 @@ public class SquareDao {
         String query = "UPDATE squares SET piece_type = ?, color = ? WHERE x = ? AND y = ?";
         try (Connection connection = chessDatabase.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, squareDto.pieceType().name());
-            preparedStatement.setString(2, squareDto.color().name());
-            preparedStatement.setString(3, squareDto.positionDto().file().name());
-            preparedStatement.setString(4, squareDto.positionDto().rank().name());
+            PieceDto pieceDto = squareDto.pieceDto();
+            preparedStatement.setString(1, pieceDto.pieceType().name());
+            preparedStatement.setString(2, pieceDto.color().name());
+            
+            PositionDto positionDto = squareDto.positionDto();
+            preparedStatement.setString(3, positionDto.file().name());
+            preparedStatement.setString(4, positionDto.rank().name());
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
