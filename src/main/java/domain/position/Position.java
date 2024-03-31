@@ -1,5 +1,7 @@
 package domain.position;
 
+import db.PositionDto;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,6 +17,10 @@ public class Position {
     public Position(File file, Rank rank) {
         this.file = file;
         this.rank = rank;
+    }
+
+    public Position(PositionDto positionDto) {
+        this(positionDto.file(), positionDto.rank());
     }
 
     public int rankDirection(Position target) {
@@ -107,6 +113,10 @@ public class Position {
 
     private boolean isTwoStep(int fileDistance) {
         return fileDistance == TWO_STEP;
+    }
+
+    public PositionDto positionDto() {
+        return new PositionDto(file, rank);
     }
 
     @Override
