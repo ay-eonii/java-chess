@@ -1,6 +1,8 @@
 package domain.board;
 
+import db.PositionDto;
 import db.SquareDao;
+import db.SquareDto;
 import domain.piece.Color;
 import domain.piece.Pawn;
 import domain.piece.Piece;
@@ -29,21 +31,40 @@ public class Squares {
                 .collect(Collectors.toSet());
     }
 
-    private final Map<Position, Piece> squares;
     private final SquareDao squareDao;
+    private final Map<Position, Piece> squares;
 
     public Squares(Map<Position, Piece> squares) {
-        this.squares = squares;
         this.squareDao = new SquareDao();
+        this.squares = squares;
     }
 
-    private long getPawnCountOfSameFile(Color color, Position position) {
-        Set<Position> sameFilePositions = position.findSameFilePositions();
-        return sameFilePositions.stream()
-                .map(squares::get)
-                .filter(piece -> piece.isSameColor(color))
-                .filter(piece -> piece.isSameType(PieceType.PAWN, PieceType.FIRST_PAWN))
-                .count();
+    public Squares() {
+        this.squareDao = new SquareDao();
+        this.squares = findSquares();
+    }
+
+    private Map<Position, Piece> findSquares() {
+        return createPositionDto()
+                .stream()
+                .map(squareDao::findPieceByPosition)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(
+                        squareDto -> new Position(squareDto.positionDto()),
+                        squareDto -> Piece.from(squareDto.pieceType(), squareDto.color()),
+                        (position, piece) -> position,
+                        LinkedHashMap::new
+                ));
+    }
+
+    private List<PositionDto> createPositionDto() {
+        return ALL_POSITIONS_CACHE.stream()
+                .map(Position::positionDto)
+                .toList();
+    }
+
+    public boolean isEmpty() {
+        return squares.isEmpty();
     }
 
     public List<PieceType> pieceTypes(Color color) {
@@ -62,7 +83,7 @@ public class Squares {
         }
         return Color.NONE;
     }
-    
+
     public boolean checkMove(Position sourcePosition, Position targetPosition) {
         if (isBlocked(sourcePosition, targetPosition)) {
             throw new IllegalArgumentException("[ERROR] 이동할 수 없습니다.");
@@ -86,6 +107,15 @@ public class Squares {
             count = getPawnCount(countOfSameFile, count);
         }
         return (int) count;
+    }
+
+    private long getPawnCountOfSameFile(Color color, Position position) {
+        Set<Position> sameFilePositions = position.findSameFilePositions();
+        return sameFilePositions.stream()
+                .map(squares::get)
+                .filter(piece -> piece.isSameColor(color))
+                .filter(piece -> piece.isSameType(PieceType.PAWN, PieceType.FIRST_PAWN))
+                .count();
     }
 
     private long getPawnCount(long countOfSameFile, long count) {
