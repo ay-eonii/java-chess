@@ -13,9 +13,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Squares {
+
+    private static final List<Position> ALL_POSITIONS_CACHE;
     private static final Set<Position> RANK_ONE_POSITIONS_CACHE;
 
     static {
+        ALL_POSITIONS_CACHE = Rank.valuesByOrder()
+                .stream()
+                .flatMap(rank -> Arrays.stream(File.values())
+                        .map(file -> new Position(file, rank)))
+                .toList();
+
         RANK_ONE_POSITIONS_CACHE = Arrays.stream(File.values())
                 .map(file -> new Position(file, Rank.ONE))
                 .collect(Collectors.toSet());
