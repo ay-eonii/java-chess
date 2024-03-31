@@ -16,8 +16,18 @@ public class Chess {
     private final ScoreCalculator scoreCalculator;
 
     public Chess() {
-        board = new BoardCreator().create();
+        board = initBoard();
         this.scoreCalculator = new ScoreCalculator();
+    }
+
+    private Board initBoard() {
+        Board board = new Board();
+        if (board.hasExistingBoard()) {
+            return board;
+        }
+        Board newBoard = new BoardCreator().create();
+        newBoard.save();
+        return newBoard;
     }
 
     public void movePiece(Position sourcePosition, Position targetPosition) {
