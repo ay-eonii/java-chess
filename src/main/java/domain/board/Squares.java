@@ -173,4 +173,13 @@ public class Squares {
             squareDao.addSquare(squareDto);
         }
     }
+
+    public void update() {
+        for (Position position : ALL_POSITIONS_CACHE) {
+            PositionDto positionDto = position.positionDto();
+            Piece piece = squares.get(position);
+            SquareDto squareDto = new SquareDto(piece.type(), piece.color(), positionDto);
+            squareDao.updateSqaure(squareDto);
+        }
+    }
 }

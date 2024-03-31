@@ -21,6 +21,7 @@ public class GameMachine {
             Chess chess = new Chess();
             outputView.printBoard(chess.getBoard());
             play(chess);
+            chess.update();
         }
     }
 

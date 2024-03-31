@@ -60,4 +60,8 @@ public class Board {
     public void save() {
         squares.save();
     }
+
+    public void update() {
+        squares.update();
+    }
 }

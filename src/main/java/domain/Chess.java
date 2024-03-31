@@ -51,4 +51,8 @@ public class Chess {
     public Board getBoard() {
         return board;
     }
+
+    public void update() {
+        board.update();
+    }
 }
