@@ -56,4 +56,8 @@ public class Board {
     public List<Piece> extractPieces() {
         return squares.extractPieces();
     }
+
+    public void save() {
+        squares.save();
+    }
 }
