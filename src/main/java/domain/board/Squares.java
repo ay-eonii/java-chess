@@ -75,10 +75,10 @@ public class Squares {
     }
 
     public Color findDeadKing() {
-        if (!squares.containsValue(new Piece(PieceType.KING, Color.WHITE))) {
+        if (!squares.containsValue(Piece.from(PieceType.KING, Color.WHITE))) {
             return Color.WHITE;
         }
-        if (!squares.containsValue(new Piece(PieceType.KING, Color.BLACK))) {
+        if (!squares.containsValue(Piece.from(PieceType.KING, Color.BLACK))) {
             return Color.BLACK;
         }
         return Color.NONE;
@@ -158,7 +158,7 @@ public class Squares {
     }
 
     private void displacePieceByPosition(Position position) {
-        squares.replace(position, new Piece(PieceType.NONE, Color.NONE));
+        squares.replace(position, Piece.from(PieceType.NONE, Color.NONE));
     }
 
     public List<Piece> extractPieces() {

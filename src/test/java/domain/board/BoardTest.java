@@ -32,11 +32,11 @@ public class BoardTest {
     @DisplayName("특정 진영의 모든 기물 타입을 구한다.")
     void pieceTypes_White() {
         board = new Board(PositionFixture.emptySquares(Map.of(
-                D4, new Piece(QUEEN, WHITE),
-                A4, new Piece(KING, WHITE),
-                C4, new Piece(ROOK, WHITE),
-                C3, new Piece(ROOK, WHITE),
-                D5, new Piece(ROOK, BLACK)
+                D4, Piece.from(QUEEN, WHITE),
+                A4, Piece.from(KING, WHITE),
+                C4, Piece.from(ROOK, WHITE),
+                C3, Piece.from(ROOK, WHITE),
+                D5, Piece.from(ROOK, BLACK)
         )));
 
         List<PieceType> pieceTypes = board.pieceTypes(WHITE);
@@ -51,7 +51,7 @@ public class BoardTest {
                 A3, new Pawn(PAWN, WHITE),
                 A4, new Pawn(FIRST_PAWN, WHITE),
                 C4, new Pawn(PAWN, WHITE),
-                A1, new Piece(KING, WHITE)
+                A1, Piece.from(KING, WHITE)
         )));
 
         long count = board.countSameFilePawn(WHITE);
@@ -63,11 +63,11 @@ public class BoardTest {
     @DisplayName("킹이 잡힌 진영을 찾는다.")
     void checkDeadKing() {
         board = new Board(PositionFixture.emptySquares(Map.of(
-                D4, new Piece(QUEEN, WHITE),
-                A4, new Piece(KING, WHITE),
-                C4, new Piece(ROOK, WHITE),
-                C3, new Piece(ROOK, WHITE),
-                D5, new Piece(ROOK, BLACK)
+                D4, Piece.from(QUEEN, WHITE),
+                A4, Piece.from(KING, WHITE),
+                C4, Piece.from(ROOK, WHITE),
+                C3, Piece.from(ROOK, WHITE),
+                D5, Piece.from(ROOK, BLACK)
         )));
 
         Color deadKing = board.findDeadKing();
@@ -91,7 +91,7 @@ public class BoardTest {
 
         @BeforeEach
         void setUp() {
-            board = new Board(PositionFixture.emptySquares(Map.of(D4, new Piece(ROOK, WHITE))));
+            board = new Board(PositionFixture.emptySquares(Map.of(D4, Piece.from(ROOK, WHITE))));
         }
 
         /**
@@ -125,7 +125,7 @@ public class BoardTest {
         @MethodSource("notRookPositions")
         @DisplayName("불가능한 움직임이라면 예외가 발생한다.")
         void canMove_Rook_ThrownException(Position invalidPosition) {
-            board = new Board(PositionFixture.emptySquares(Map.of(D4, new Piece(ROOK, WHITE))));
+            board = new Board(PositionFixture.emptySquares(Map.of(D4, Piece.from(ROOK, WHITE))));
 
             assertThatThrownBy(() -> board.checkMove(D4, invalidPosition))
                     .isInstanceOf(IllegalArgumentException.class);
@@ -144,8 +144,8 @@ public class BoardTest {
         @DisplayName("가능한 움직임이지만 장애물이 있다면 예외가 발생한다.")
         void canMove_RookBlocked_ThrownException() {
             board = new Board(PositionFixture.emptySquares(Map.of(
-                    D4, new Piece(ROOK, WHITE),
-                    E4, new Piece(ROOK, BLACK)
+                    D4, Piece.from(ROOK, WHITE),
+                    E4, Piece.from(ROOK, BLACK)
             )));
 
             assertThatThrownBy(() -> board.checkMove(D4, F4))
@@ -166,7 +166,7 @@ public class BoardTest {
 
         @BeforeEach
         void setUp() {
-            board = new Board(PositionFixture.emptySquares(Map.of(D4, new Piece(KNIGHT, WHITE))));
+            board = new Board(PositionFixture.emptySquares(Map.of(D4, Piece.from(KNIGHT, WHITE))));
         }
 
         /**
@@ -203,15 +203,15 @@ public class BoardTest {
         @DisplayName("가능한 움직임이라면 장애물이 있어도 이동할 수 있다.")
         void canMove_KnightJump_True(Position targetPosition) {
             board = new Board(PositionFixture.emptySquares(Map.of(
-                    D4, new Piece(KNIGHT, WHITE),
-                    C3, new Piece(KNIGHT, BLACK),
-                    C4, new Piece(KNIGHT, BLACK),
-                    C5, new Piece(KNIGHT, BLACK),
-                    D3, new Piece(KNIGHT, BLACK),
-                    D5, new Piece(KNIGHT, BLACK),
-                    E3, new Piece(KNIGHT, BLACK),
-                    E4, new Piece(KNIGHT, BLACK),
-                    E6, new Piece(KNIGHT, BLACK)
+                    D4, Piece.from(KNIGHT, WHITE),
+                    C3, Piece.from(KNIGHT, BLACK),
+                    C4, Piece.from(KNIGHT, BLACK),
+                    C5, Piece.from(KNIGHT, BLACK),
+                    D3, Piece.from(KNIGHT, BLACK),
+                    D5, Piece.from(KNIGHT, BLACK),
+                    E3, Piece.from(KNIGHT, BLACK),
+                    E4, Piece.from(KNIGHT, BLACK),
+                    E6, Piece.from(KNIGHT, BLACK)
             )));
             boolean canMove = board.checkMove(D4, targetPosition);
 

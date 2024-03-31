@@ -114,14 +114,14 @@ public class PositionFixture {
     }
 
     public static Map<Position, Piece> emptySquares() {
-        return emptySquares(Map.of(A1, new Piece(PieceType.NONE, Color.NONE)));
+        return emptySquares(Map.of(A1, Piece.from(PieceType.NONE, Color.NONE)));
     }
 
     public static Map<Position, Piece> emptySquares(Map<Position, Piece> squares) {
         Map<Position, Piece> board = allPositions().stream()
                 .collect(Collectors.toMap(
                         o -> o,
-                        o -> new Piece(PieceType.NONE, Color.NONE)
+                        o -> Piece.from(PieceType.NONE, Color.NONE)
                 ));
         squares.forEach(board::replace);
         return board;

@@ -11,7 +11,7 @@ public class Piece {
     protected final PieceType pieceType;
     protected final Color color;
 
-    public Piece(PieceType pieceType, Color color) {
+    protected Piece(PieceType pieceType, Color color) {
         this.pieceType = pieceType;
         this.color = color;
     }

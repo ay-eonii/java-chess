@@ -44,14 +44,14 @@ public class SettingRuleTest {
         @DisplayName("랭크가 1, 파일이 e일 경우 흰색 킹을 반환한다.")
         void findPieceByPosition_RankOneFileE_WhiteKing() {
             assertThat(settingRule.findPieceByPosition(Rank.ONE, File.E))
-                    .isEqualTo(new Piece(PieceType.KING, Color.WHITE));
+                    .isEqualTo(Piece.from(PieceType.KING, Color.WHITE));
         }
 
         @Test
         @DisplayName("랭크가 8, 파일이 e일 경우 검정색 킹을 반환한다.")
         void findPieceByPosition_RankEightFileE_BlackKing() {
             assertThat(settingRule.findPieceByPosition(Rank.EIGHT, File.E))
-                    .isEqualTo(new Piece(PieceType.KING, Color.BLACK));
+                    .isEqualTo(Piece.from(PieceType.KING, Color.BLACK));
         }
     }
 
@@ -62,14 +62,14 @@ public class SettingRuleTest {
         @DisplayName("랭크가 1, 파일이 d일 경우 흰색 퀸을 반환한다.")
         void findPieceByPosition_RankOneFileD_WhiteQueen() {
             assertThat(settingRule.findPieceByPosition(Rank.ONE, File.D))
-                    .isEqualTo(new Piece(PieceType.QUEEN, Color.WHITE));
+                    .isEqualTo(Piece.from(PieceType.QUEEN, Color.WHITE));
         }
 
         @Test
         @DisplayName("랭크가 8, 파일이 d일 경우 검정색 퀸을 반환한다.")
         void findPieceByPosition_RankEightFileD_BlackQueen() {
             assertThat(settingRule.findPieceByPosition(Rank.EIGHT, File.D))
-                    .isEqualTo(new Piece(PieceType.QUEEN, Color.BLACK));
+                    .isEqualTo(Piece.from(PieceType.QUEEN, Color.BLACK));
         }
     }
 
@@ -81,7 +81,7 @@ public class SettingRuleTest {
         @DisplayName("랭크가 1, 파일이 c 또는 f일 경우 흰색 비숍을 반환한다.")
         void findPieceByPosition_RankOneFileCF_WhiteBishop(File file) {
             assertThat(settingRule.findPieceByPosition(Rank.ONE, file))
-                    .isEqualTo(new Piece(PieceType.BISHOP, Color.WHITE));
+                    .isEqualTo(Piece.from(PieceType.BISHOP, Color.WHITE));
         }
 
         @ParameterizedTest
@@ -89,7 +89,7 @@ public class SettingRuleTest {
         @DisplayName("랭크가 8, 파일이 c 또는 f일 경우 검정색 비숍을 반환한다.")
         void findPieceByPosition_RankEightFileCF_BlackBishop(File file) {
             assertThat(settingRule.findPieceByPosition(Rank.EIGHT, file))
-                    .isEqualTo(new Piece(PieceType.BISHOP, Color.BLACK));
+                    .isEqualTo(Piece.from(PieceType.BISHOP, Color.BLACK));
         }
     }
 
@@ -101,7 +101,7 @@ public class SettingRuleTest {
         @DisplayName("랭크가 1, 파일이 b 또는 g일 경우 흰색 나이트를 반환한다.")
         void findPieceByPosition_RankOneFileBG_WhiteKnight(File file) {
             assertThat(settingRule.findPieceByPosition(Rank.ONE, file))
-                    .isEqualTo(new Piece(PieceType.KNIGHT, Color.WHITE));
+                    .isEqualTo(Piece.from(PieceType.KNIGHT, Color.WHITE));
         }
 
         @ParameterizedTest
@@ -109,7 +109,7 @@ public class SettingRuleTest {
         @DisplayName("랭크가 8, 파일이 b 또는 g일 경우 검정색 나이트를 반환한다.")
         void findPieceByPosition_RankEightFileBG_BlackKnight(File file) {
             assertThat(settingRule.findPieceByPosition(Rank.EIGHT, file))
-                    .isEqualTo(new Piece(PieceType.KNIGHT, Color.BLACK));
+                    .isEqualTo(Piece.from(PieceType.KNIGHT, Color.BLACK));
         }
     }
 
@@ -121,7 +121,7 @@ public class SettingRuleTest {
         @DisplayName("랭크가 1, 파일이 a 또는 h일 경우 흰색 룩을 반환한다.")
         void findPieceByPosition_RankOneFileAH_WhiteRook(File file) {
             assertThat(settingRule.findPieceByPosition(Rank.ONE, file))
-                    .isEqualTo(new Piece(PieceType.ROOK, Color.WHITE));
+                    .isEqualTo(Piece.from(PieceType.ROOK, Color.WHITE));
         }
 
         @ParameterizedTest
@@ -129,7 +129,7 @@ public class SettingRuleTest {
         @DisplayName("랭크가 8, 파일이 a 또는 h일 경우 검정색 룩을 반환한다.")
         void findPieceByPosition_RankEightFileAH_BlackRook(File file) {
             assertThat(settingRule.findPieceByPosition(Rank.EIGHT, file))
-                    .isEqualTo(new Piece(PieceType.ROOK, Color.BLACK));
+                    .isEqualTo(Piece.from(PieceType.ROOK, Color.BLACK));
         }
     }
 }

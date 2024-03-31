@@ -17,7 +17,7 @@ class PawnTest {
     @DisplayName("폰의 목표 위치가 비어있다면 이동 가능하다.")
     void canMove_PawnTargetIsNone_True() {
         domain.piece.Pawn pawn = new domain.piece.Pawn(PieceType.PAWN, Color.BLACK);
-        Piece targetPiece = new Piece(PieceType.NONE, Color.NONE);
+        Piece targetPiece = Piece.from(PieceType.NONE, Color.NONE);
 
         assertThat(pawn.canMove(targetPiece)).isTrue();
     }
@@ -27,7 +27,7 @@ class PawnTest {
     @DisplayName("폰의 목표 위치가 비어있지 않다면 이동할 수 없다.")
     void canMove_PawnTargetIsNotNone_False(Color color) {
         domain.piece.Pawn pawn = new domain.piece.Pawn(PieceType.PAWN, Color.BLACK);
-        Piece targetPiece = new Piece(PieceType.PAWN, color);
+        Piece targetPiece = Piece.from(PieceType.PAWN, color);
 
         assertThat(pawn.canMove(targetPiece)).isFalse();
     }
