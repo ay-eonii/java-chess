@@ -8,3 +8,8 @@ CREATE TABLE squares
     y          VARCHAR(5)  NOT NULL,
     PRIMARY KEY (x, y)
 );
+
+CREATE TABLE turn
+(
+    color VARCHAR(5) NOT NULL
+);
