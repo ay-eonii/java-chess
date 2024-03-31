@@ -164,4 +164,13 @@ public class Squares {
     public List<Piece> extractPieces() {
         return squares.values().stream().toList();
     }
+
+    public void save() {
+        for (Map.Entry<Position, Piece> square : squares.entrySet()) {
+            PositionDto positionDto = square.getKey().positionDto();
+            Piece piece = square.getValue();
+            SquareDto squareDto = new SquareDto(piece.type(), piece.color(), positionDto);
+            squareDao.addSquare(squareDto);
+        }
+    }
 }
