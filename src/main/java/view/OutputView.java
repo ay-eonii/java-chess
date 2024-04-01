@@ -49,7 +49,7 @@ public class OutputView {
         System.out.println();
     }
 
-    public void printWinner(Color loserColor, Color winnerColor) {
+    public void printWinner(Color winnerColor, Color loserColor) {
         System.out.println(loserColor + " 킹이 잡혔습니다.");
         System.out.println("우승 진영은 " + winnerColor + "입니다.");
     }

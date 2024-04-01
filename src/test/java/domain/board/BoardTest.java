@@ -70,9 +70,9 @@ public class BoardTest {
                 D5, Piece.from(ROOK, BLACK)
         )));
 
-        Color deadKing = board.findDeadKing();
+        Color winnerColor = board.findWinnerColor();
 
-        assertThat(deadKing).isEqualTo(BLACK);
+        assertThat(winnerColor).isEqualTo(WHITE);
     }
 
     @Nested

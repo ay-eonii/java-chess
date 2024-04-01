@@ -37,8 +37,8 @@ public class Board {
         return squares.pieceTypes(color);
     }
 
-    public Color findDeadKing() {
-        return squares.findDeadKing();
+    public Color findWinnerColor() {
+        return squares.findWinnerColor();
     }
 
     public boolean checkMove(Position sourcePosition, Position targetPosition) {

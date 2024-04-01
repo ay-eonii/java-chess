@@ -78,12 +78,12 @@ public class Squares {
                 .toList();
     }
 
-    public Color findDeadKing() {
+    public Color findWinnerColor() {
         if (!squares.containsValue(Piece.from(PieceType.KING, Color.WHITE))) {
-            return Color.WHITE;
+            return Color.BLACK;
         }
         if (!squares.containsValue(Piece.from(PieceType.KING, Color.BLACK))) {
-            return Color.BLACK;
+            return Color.WHITE;
         }
         return Color.NONE;
     }
