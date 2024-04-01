@@ -14,6 +14,6 @@ public class ScoreCalculator {
         Float sum = pieceTypes.stream()
                 .map(pieceValue::value)
                 .reduce(0f, Float::sum);
-        return sum - PAWN_RATIO * countSameFilePawn;
+        return sum - (PAWN_RATIO * countSameFilePawn);
     }
 }
