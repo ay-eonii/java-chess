@@ -35,6 +35,6 @@ public enum PieceType {
     }
 
     public boolean isPawn() {
-        return this == PAWN;
+        return this == PAWN || this == FIRST_PAWN;
     }
 }
