@@ -18,10 +18,17 @@ public class Piece {
     }
 
     public static Piece from(PieceType pieceType, Color color) {
-        if (pieceType.isFirstPawn()) {
+        if (pieceType.isPawn()) {
             return new Pawn(pieceType, color);
         }
         return new Piece(pieceType, color);
+    }
+
+    public static Piece of(Piece piece) {
+        if (piece.pieceType.isPawn()) {
+            return new Pawn(PieceType.PAWN, piece.color);
+        }
+        return piece;
     }
 
     public PieceDto createDto() {

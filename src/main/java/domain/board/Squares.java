@@ -154,10 +154,7 @@ public class Squares {
     }
 
     private void placePieceByPosition(Piece piece, Position position) {
-        Piece changedPiece = piece;
-        if (piece.isSameType(PieceType.FIRST_PAWN)) {
-            changedPiece = new Pawn(piece);
-        }
+        Piece changedPiece = Piece.of(piece);
         squares.replace(position, changedPiece);
     }
 
