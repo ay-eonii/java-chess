@@ -30,10 +30,6 @@ public enum PieceType {
         return attackTactic.canAttack(source, target);
     }
 
-    public boolean isFirstPawn() {
-        return this == FIRST_PAWN;
-    }
-
     public boolean isPawn() {
         return this == PAWN || this == FIRST_PAWN;
     }
