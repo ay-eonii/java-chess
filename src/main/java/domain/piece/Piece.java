@@ -49,7 +49,7 @@ public class Piece {
     }
 
     public boolean canMove(Piece targetPiece, Position sourcePosition, Position targetPosition) {
-        return this.color != targetPiece.color && pieceType.canMove(sourcePosition, targetPosition);
+        return canMove(targetPiece) && canMove(sourcePosition, targetPosition);
     }
 
     protected boolean canMove(Position source, Position target) {
@@ -82,10 +82,6 @@ public class Piece {
 
     public PieceType type() {
         return pieceType;
-    }
-
-    public Color color() {
-        return color;
     }
 
     @Override
