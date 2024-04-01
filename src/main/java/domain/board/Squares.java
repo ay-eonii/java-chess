@@ -118,7 +118,7 @@ public class Squares {
         return sameFilePositions.stream()
                 .map(squares::get)
                 .filter(piece -> piece.isSameColor(color))
-                .filter(piece -> piece.isSameType(PieceType.PAWN, PieceType.FIRST_PAWN))
+                .filter(piece -> piece.getClass() == Pawn.class)
                 .count();
     }
 
