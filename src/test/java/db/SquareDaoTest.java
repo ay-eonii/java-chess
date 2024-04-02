@@ -35,7 +35,7 @@ class SquareDaoTest {
     void findPieceByPosition() {
         PositionDto positionDto = new PositionDto(A, ONE);
 
-        SquareDto squareDto = squareDao.findPieceByPosition(positionDto);
+        SquareDto squareDto = squareDao.findPieceByPosition(positionDto).get();
 
         PieceDto pieceDto = new PieceDto(QUEEN, WHITE);
         assertThat(squareDto).isEqualTo(new SquareDto(pieceDto, positionDto));

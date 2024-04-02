@@ -49,7 +49,8 @@ public class Squares {
         return createPositionDto()
                 .stream()
                 .map(squareDao::findPieceByPosition)
-                .filter(Objects::nonNull)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toMap(
                         squareDto -> new Position(squareDto.positionDto()),
                         squareDto -> {

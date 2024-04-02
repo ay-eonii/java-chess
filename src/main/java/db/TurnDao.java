@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class TurnDao {
 
@@ -22,19 +23,19 @@ public class TurnDao {
         }
     }
 
-    public TurnDto findTurn() {
+    public Optional<TurnDto> findTurn() {
         String query = "SELECT * FROM turn limit 1";
         try (Connection connection = chessDatabase.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Color color = Color.valueOf(resultSet.getString("color"));
-                return new TurnDto(color);
+                return Optional.of(new TurnDto(color));
             }
+            return Optional.empty();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
     }
 
     public int updateTurn(TurnDto turnDto) {

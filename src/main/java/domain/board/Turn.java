@@ -5,6 +5,7 @@ import db.TurnDto;
 import domain.piece.Color;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class Turn {
 
@@ -22,9 +23,9 @@ public class Turn {
     }
 
     private Color initColor() {
-        TurnDto turnDto = turnDao.findTurn();
-        if (turnDto != null) {
-            return turnDto.color();
+        Optional<TurnDto> optionalTurnDto = turnDao.findTurn();
+        if (optionalTurnDto.isPresent()) {
+            return optionalTurnDto.get().color();
         }
         return Color.WHITE;
     }
