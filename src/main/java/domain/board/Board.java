@@ -16,7 +16,6 @@ public class Board {
     public Board(Map<Position, Piece> squares) {
         this.squares = new Squares(squares);
         this.turn = new Turn();
-        turn.save();
     }
 
     public Board() {
@@ -60,6 +59,7 @@ public class Board {
 
     public void save() {
         squares.save();
+        turn.save();
     }
 
     public void update() {

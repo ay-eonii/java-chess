@@ -49,4 +49,8 @@ public class Chess {
     public void reset() {
         board.reset();
     }
+
+    public void save() {
+        board.save();
+    }
 }

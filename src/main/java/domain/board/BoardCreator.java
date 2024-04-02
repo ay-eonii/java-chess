@@ -8,8 +8,6 @@ public class BoardCreator {
         if (board.hasExistingBoard()) {
             return board;
         }
-        board = new Board(squaresGenerator.generate());
-        board.save();
-        return board;
+        return new Board(squaresGenerator.generate());
     }
 }

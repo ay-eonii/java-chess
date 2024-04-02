@@ -19,6 +19,7 @@ public class GameMachine {
         Command command = requestStartCommand();
         if (command.isStart()) {
             Chess chess = new Chess();
+            chess.save();
             outputView.printBoard(chess.getBoard());
             play(chess);
             chess.update();
