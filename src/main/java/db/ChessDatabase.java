@@ -17,7 +17,7 @@ public class ChessDatabase {
             return DriverManager.getConnection("jdbc:mysql://" + SERVER + "/" + DATABASE + OPTION, USERNAME, PASSWORD);
         } catch (final SQLException e) {
             System.err.println("DB 연결 오류:" + e.getMessage());
-            return null;
+            throw new IllegalStateException("DB를 연결할 수 없습니다.");
         }
     }
 }
