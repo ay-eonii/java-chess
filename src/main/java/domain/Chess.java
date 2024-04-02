@@ -3,12 +3,9 @@ package domain;
 import domain.board.Board;
 import domain.board.BoardCreator;
 import domain.piece.Color;
-import domain.piece.PieceType;
 import domain.position.Position;
-import domain.score.Score;
 import domain.score.ScoreCalculator;
-
-import java.util.List;
+import domain.score.Scores;
 
 public class Chess {
 
@@ -27,11 +24,8 @@ public class Chess {
         }
     }
 
-    public Score score(Color color) {
-        List<PieceType> pieceTypes = board.pieceTypes(color);
-        int countSameFilePawn = board.countSameFilePawn(color);
-        float totalValue = scoreCalculator.sumValues(pieceTypes, countSameFilePawn);
-        return new Score(color, totalValue);
+    public Scores score() {
+        return scoreCalculator.sumValues(board);
     }
 
     public Color findWinnerColor() {

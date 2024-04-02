@@ -2,6 +2,7 @@ package domain;
 
 import domain.piece.Color;
 import domain.score.Score;
+import domain.score.Scores;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +15,8 @@ class ChessTest {
     void score_White() {
         Chess chess = new Chess();
 
-        Score score = chess.score(Color.WHITE);
+        Scores scores = chess.score();
 
-        assertThat(score).isEqualTo(new Score(Color.WHITE, 38f));
+        assertThat(scores.white()).isEqualTo(new Score(Color.WHITE, 38f));
     }
 }

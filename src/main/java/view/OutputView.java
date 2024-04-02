@@ -5,6 +5,7 @@ import domain.piece.Color;
 import domain.piece.Piece;
 import domain.piece.PieceType;
 import domain.score.Score;
+import domain.score.Scores;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,10 +43,10 @@ public class OutputView {
         System.out.println(errorMessage);
     }
 
-    public void printScore(Score... scores) {
+    public void printScore(Scores scores) {
         System.out.println("-------- 점수 --------");
-        Arrays.stream(scores)
-                .forEach(score -> System.out.println(ScoreOutput.asString(score)));
+        System.out.println(ScoreOutput.asString(scores.white()));
+        System.out.println(ScoreOutput.asString(scores.black()));
         System.out.println();
     }
 

@@ -4,7 +4,7 @@ import domain.Chess;
 import domain.command.Command;
 import domain.command.PlayCommand;
 import domain.piece.Color;
-import domain.score.Score;
+import domain.score.Scores;
 import view.InputView;
 import view.OutputView;
 import view.mapper.CommandInput;
@@ -45,9 +45,8 @@ public class GameMachine {
     }
 
     private void checkScore(Chess chess) {
-        Score whiteScore = chess.score(Color.WHITE);
-        Score blackScore = chess.score(Color.BLACK);
-        outputView.printScore(whiteScore, blackScore);
+        Scores score = chess.score();
+        outputView.printScore(score);
     }
 
     private void movePieceByCommand(Chess chess, PlayCommand playCommand) {

@@ -1,11 +1,14 @@
 package domain.score;
 
-import domain.piece.PieceType;
+import domain.board.Board;
+import domain.piece.Color;
+import domain.piece.Piece;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.Map;
 
+import static domain.board.PositionFixture.*;
 import static domain.piece.PieceType.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,52 +17,56 @@ public class ScoreCalculatorTest {
     @Test
     @DisplayName("기물 한 개의 점수를 합산한다.")
     void sumValues_Queen_9() {
-        List<PieceType> pieces = List.of(
-                QUEEN
-        );
+        Board board = new Board(Map.of(
+                A3, Piece.from(QUEEN, Color.WHITE)
+        ));
         ScoreCalculator scoreCalculator = new ScoreCalculator();
 
-        float totalValue = scoreCalculator.sumValues(pieces, 0);
+        Scores scores = scoreCalculator.sumValues(board);
 
-        assertThat(totalValue).isEqualTo(9f);
+        assertThat(scores.white()).isEqualTo(new Score(Color.WHITE, 9f));
     }
 
     @Test
     @DisplayName("기물 두 개의 점수를 합산한다.")
     void sumValues_Queen_Rook_14() {
-        List<PieceType> pieces = List.of(
-                QUEEN, ROOK
-        );
+        Board board = new Board(Map.of(
+                A3, Piece.from(QUEEN, Color.WHITE),
+                A4, Piece.from(ROOK, Color.WHITE)
+        ));
         ScoreCalculator scoreCalculator = new ScoreCalculator();
 
-        float totalValue = scoreCalculator.sumValues(pieces, 0);
+        Scores scores = scoreCalculator.sumValues(board);
 
-        assertThat(totalValue).isEqualTo(14f);
+        assertThat(scores.white()).isEqualTo(new Score(Color.WHITE, 14f));
     }
 
     @Test
     @DisplayName("같은 기물 두 개의 점수를 합산한다.")
     void sumValues_Rook_Rook_10() {
-        List<PieceType> pieces = List.of(
-                ROOK, ROOK
-        );
+        Board board = new Board(Map.of(
+                A3, Piece.from(ROOK, Color.WHITE),
+                A4, Piece.from(ROOK, Color.WHITE)
+        ));
         ScoreCalculator scoreCalculator = new ScoreCalculator();
 
-        float totalValue = scoreCalculator.sumValues(pieces, 0);
+        Scores scores = scoreCalculator.sumValues(board);
 
-        assertThat(totalValue).isEqualTo(10f);
+        assertThat(scores.white()).isEqualTo(new Score(Color.WHITE, 10f));
     }
 
     @Test
     @DisplayName("같은 파일에 폰이 두개라면 개당 0.5점으로 계산한다.")
     void sumValues_Pawn_Pawn_2_2() {
-        List<PieceType> pieces = List.of(
-                PAWN, PAWN, FIRST_PAWN
-        );
+        Board board = new Board(Map.of(
+                A3, Piece.from(PAWN, Color.WHITE),
+                A4, Piece.from(PAWN, Color.WHITE),
+                B7, Piece.from(FIRST_PAWN, Color.WHITE)
+        ));
         ScoreCalculator scoreCalculator = new ScoreCalculator();
 
-        float totalValue = scoreCalculator.sumValues(pieces, 2);
+        Scores scores = scoreCalculator.sumValues(board);
 
-        assertThat(totalValue).isEqualTo(2f);
+        assertThat(scores.white()).isEqualTo(new Score(Color.WHITE, 2f));
     }
 }

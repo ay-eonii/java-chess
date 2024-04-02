@@ -117,6 +117,7 @@ public class Squares {
         Set<Position> sameFilePositions = position.findSameFilePositions();
         return sameFilePositions.stream()
                 .map(squares::get)
+                .filter(Objects::nonNull)
                 .filter(piece -> piece.isSameColor(color))
                 .filter(piece -> piece.getClass() == Pawn.class)
                 .count();
