@@ -32,6 +32,10 @@ public class Chess {
         return board.findWinnerColor();
     }
 
+    public boolean isFinish() {
+        return board.isFinish();
+    }
+
     public Board getBoard() {
         return board;
     }
@@ -45,6 +49,7 @@ public class Chess {
     }
 
     public void save() {
+        board.reset();
         board.save();
     }
 }

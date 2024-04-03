@@ -71,4 +71,8 @@ public class Board {
         squares.reset();
         turn.reset();
     }
+
+    public boolean isFinish() {
+        return squares.isFinish();
+    }
 }

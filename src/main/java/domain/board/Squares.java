@@ -157,6 +157,8 @@ public class Squares {
 
     private void placePieceByPosition(Piece piece, Position position) {
         Piece changedPiece = Piece.of(piece);
+        Piece targetPiece = findPieceByPosition(position);
+        targetPiece.die();
         squares.replace(position, changedPiece);
     }
 
@@ -188,5 +190,10 @@ public class Squares {
 
     public void reset() {
         squareDao.deleteAll();
+    }
+
+    public boolean isFinish() {
+        return squares.values().stream()
+                .anyMatch(Piece::isFinish);
     }
 }

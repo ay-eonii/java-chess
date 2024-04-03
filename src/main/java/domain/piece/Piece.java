@@ -84,6 +84,14 @@ public class Piece {
         return pieceType;
     }
 
+    public void die() {
+        this.pieceType.die();
+    }
+
+    public boolean isFinish() {
+        return pieceType.isFinish();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

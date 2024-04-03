@@ -16,6 +16,7 @@ public enum PieceType {
 
     private final MoveTactic moveTactic;
     private final AttackTactic attackTactic;
+    private boolean isDead;
 
     PieceType(MoveTactic moveTactic, AttackTactic attackTactic) {
         this.moveTactic = moveTactic;
@@ -32,5 +33,13 @@ public enum PieceType {
 
     public boolean isPawn() {
         return this == PAWN || this == FIRST_PAWN;
+    }
+
+    public void die() {
+        this.isDead = true;
+    }
+
+    public boolean isFinish() {
+        return KING.isDead;
     }
 }

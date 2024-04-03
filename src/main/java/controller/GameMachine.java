@@ -27,8 +27,8 @@ public class GameMachine {
     }
 
     private void play(Chess chess) {
-        Color winnerColor = chess.findWinnerColor();
-        if (winnerColor != Color.NONE) {
+        if (chess.isFinish()) {
+            Color winnerColor = chess.findWinnerColor();
             outputView.printWinner(winnerColor, winnerColor.opposite());
             checkScore(chess);
             chess.reset();
