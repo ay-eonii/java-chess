@@ -56,6 +56,13 @@ public class Piece {
         turn.validate(color);
     }
 
+    public Piece convertNotFirstMovePiece() {
+        if (this.pieceType == PieceType.FIRST_PAWN) {
+            return new Piece(PieceType.PAWN, this.color);
+        }
+        return this;
+    }
+
     public PieceType type() {
         return pieceType;
     }

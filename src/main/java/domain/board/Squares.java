@@ -108,9 +108,8 @@ public class Squares {
     }
 
     private void placePieceByPosition(Piece piece, Position position) {
-        Piece targetPiece = findPieceByPosition(position);
-        targetPiece.die();
-        squares.replace(position, piece);
+        Piece notFirstMovePiece = piece.convertNotFirstMovePiece();
+        squares.replace(position, notFirstMovePiece);
     }
 
     private void displacePieceByPosition(Position position) {
