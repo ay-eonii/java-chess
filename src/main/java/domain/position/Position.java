@@ -33,11 +33,10 @@ public class Position {
         return fileDistance == rankDistance;
     }
 
-    public boolean isDiagonal(Position target, int... steps) {
+    public boolean isDiagonal(Position target, int step) {
         int fileDistance = file.distance(target.file);
         int rankDistance = rank.distance(target.rank);
-        return Arrays.stream(steps)
-                .allMatch(step -> step == fileDistance && fileDistance == rankDistance);
+        return step == fileDistance && fileDistance == rankDistance;
     }
 
     public boolean isStraight(Position target) {
