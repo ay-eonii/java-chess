@@ -120,11 +120,6 @@ public class Squares {
         return squares.values().stream().toList();
     }
 
-    public boolean isFinish() {
-        return squares.values().stream()
-                .anyMatch(Piece::isFinish);
-    }
-
     public Map<PositionDto, PieceDto> squaresDto() {
         return squares.entrySet().stream()
                 .collect(Collectors.toMap(
@@ -133,5 +128,10 @@ public class Squares {
                         (position, piece) -> position,
                         LinkedHashMap::new
                 ));
+    }
+
+    public boolean isGameOver(Position targetPosition) {
+        Piece targetPiece = findPieceByPosition(targetPosition);
+        return targetPiece.checkGameOver();
     }
 }

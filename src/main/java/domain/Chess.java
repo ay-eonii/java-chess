@@ -5,6 +5,7 @@ import db.SquareDto;
 import db.TurnDto;
 import domain.board.Board;
 import domain.board.BoardCreator;
+import domain.board.GameStatus;
 import domain.piece.Color;
 import domain.position.Position;
 import domain.score.ScoreCalculator;
@@ -27,11 +28,21 @@ public class Chess {
         this.scoreCalculator = new ScoreCalculator();
     }
 
-    public void movePiece(Position sourcePosition, Position targetPosition) {
+    public GameStatus movePiece(Position sourcePosition, Position targetPosition) {
         board.checkTurn(sourcePosition);
         if (board.checkMove(sourcePosition, targetPosition)) {
+            GameStatus over = checkGameOver(targetPosition);
             board.move(sourcePosition, targetPosition);
+            return over;
         }
+        return GameStatus.PLAYING;
+    }
+
+    private GameStatus checkGameOver(Position targetPosition) {
+        if (board.isGameOver(targetPosition)) {
+            return GameStatus.OVER;
+        }
+        return GameStatus.PLAYING;
     }
 
     public Scores score() {
@@ -40,10 +51,6 @@ public class Chess {
 
     public Color findWinnerColor() {
         return board.findWinnerColor();
-    }
-
-    public boolean isFinish() {
-        return board.isFinish();
     }
 
     public Board getBoard() {

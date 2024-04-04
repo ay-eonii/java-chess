@@ -3,6 +3,7 @@ package controller;
 import db.ChessDto;
 import db.ChessRepository;
 import domain.Chess;
+import domain.board.GameStatus;
 import domain.command.Command;
 import domain.command.PlayCommand;
 import domain.piece.Color;
@@ -23,10 +24,10 @@ public class GameMachine {
         outputView.printStartNotice();
         Command command = requestStartCommand();
         if (command.isStart()) {
+            GameStatus gameStatus = GameStatus.PLAYING;
             Chess chess = initChess();
             outputView.printBoard(chess.getBoard());
-            play(chess);
-            chessRepository.save(chess.boardDto(), chess.turnDto());
+            play(chess, gameStatus);
         }
     }
 
@@ -36,8 +37,8 @@ public class GameMachine {
                 .orElseGet(Chess::new);
     }
 
-    private void play(Chess chess) {
-        if (chess.isFinish()) {
+    private void play(Chess chess, GameStatus gameStatus) {
+        if (gameStatus == GameStatus.OVER) {
             Color winnerColor = chess.findWinnerColor();
             outputView.printWinner(winnerColor, winnerColor.opposite());
             checkScore(chess);
@@ -50,7 +51,7 @@ public class GameMachine {
         }
         if (playCommand.isStatus()) {
             checkScore(chess);
-            play(chess);
+            play(chess, gameStatus);
         }
     }
 
@@ -60,13 +61,15 @@ public class GameMachine {
     }
 
     private void movePieceByCommand(Chess chess, PlayCommand playCommand) {
+        GameStatus gameStatus = GameStatus.PLAYING;
         try {
-            chess.movePiece(playCommand.sourcePosition(), playCommand.targetPosition());
+            gameStatus = chess.movePiece(playCommand.sourcePosition(), playCommand.targetPosition());
+            chessRepository.save(chess.boardDto(), chess.turnDto());
             outputView.printBoard(chess.getBoard());
-            play(chess);
+            play(chess, gameStatus);
         } catch (IllegalArgumentException e) {
             outputView.printError(e.getMessage());
-            play(chess);
+            play(chess, gameStatus);
         }
     }
 

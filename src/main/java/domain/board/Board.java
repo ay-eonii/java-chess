@@ -48,16 +48,16 @@ public class Board {
         turn.swap();
     }
 
+    public boolean isGameOver(Position targetPosition) {
+        return squares.isGameOver(targetPosition);
+    }
+
     public List<PieceTypes> findSameFilePieces(Color color) {
         return squares.countSameFilePawn1(color);
     }
 
     public List<Piece> extractPieces() {
         return squares.extractPieces();
-    }
-
-    public boolean isFinish() {
-        return squares.isFinish();
     }
 
     public List<SquareDto> boardDto() {

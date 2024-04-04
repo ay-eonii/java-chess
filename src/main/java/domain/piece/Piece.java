@@ -67,12 +67,8 @@ public class Piece {
         return pieceType;
     }
 
-    public void die() {
-        this.pieceType.die();
-    }
-
-    public boolean isFinish() {
-        return pieceType.isFinish();
+    public boolean checkGameOver() {
+        return pieceType.isOver();
     }
 
     public PieceDto pieceDto() {

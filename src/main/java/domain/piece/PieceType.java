@@ -4,23 +4,24 @@ import domain.position.Position;
 
 public enum PieceType {
 
-    BISHOP(MoveTactic.DIAGONAL, AttackTactic.DIAGONAL),
-    KING(MoveTactic.NEIGHBOR, AttackTactic.NEIGHBOR),
-    KNIGHT(MoveTactic.ONE_STRAIGHT_ONE_DIAGONAL, AttackTactic.ONE_STRAIGHT_ONE_DIAGONAL),
-    PAWN(MoveTactic.FORWARD_ONE_STRAIGHT, AttackTactic.ONE_DIAGONAL),
-    FIRST_PAWN(MoveTactic.FORWARD_ONE_OR_TWO_STRAIGHT, AttackTactic.ONE_DIAGONAL),
-    QUEEN(MoveTactic.STRAIGHT_DIAGONAL, AttackTactic.STRAIGHT_DIAGONAL),
-    ROOK(MoveTactic.STRAIGHT, AttackTactic.STRAIGHT),
-    NONE(MoveTactic.STOP, AttackTactic.NOT_ATTACK),
+    BISHOP(MoveTactic.DIAGONAL, AttackTactic.DIAGONAL, false),
+    KING(MoveTactic.NEIGHBOR, AttackTactic.NEIGHBOR, true),
+    KNIGHT(MoveTactic.ONE_STRAIGHT_ONE_DIAGONAL, AttackTactic.ONE_STRAIGHT_ONE_DIAGONAL, false),
+    PAWN(MoveTactic.FORWARD_ONE_STRAIGHT, AttackTactic.ONE_DIAGONAL, false),
+    FIRST_PAWN(MoveTactic.FORWARD_ONE_OR_TWO_STRAIGHT, AttackTactic.ONE_DIAGONAL, false),
+    QUEEN(MoveTactic.STRAIGHT_DIAGONAL, AttackTactic.STRAIGHT_DIAGONAL, false),
+    ROOK(MoveTactic.STRAIGHT, AttackTactic.STRAIGHT, false),
+    NONE(MoveTactic.STOP, AttackTactic.NOT_ATTACK, false),
     ;
 
     private final MoveTactic moveTactic;
     private final AttackTactic attackTactic;
-    private boolean isDead;
+    private final boolean isOver;
 
-    PieceType(MoveTactic moveTactic, AttackTactic attackTactic) {
+    PieceType(MoveTactic moveTactic, AttackTactic attackTactic, boolean isOver) {
         this.moveTactic = moveTactic;
         this.attackTactic = attackTactic;
+        this.isOver = isOver;
     }
 
     public boolean canMove(Position source, Position target) {
@@ -31,11 +32,7 @@ public enum PieceType {
         return attackTactic.canAttack(source, target);
     }
 
-    public void die() {
-        this.isDead = true;
-    }
-
-    public boolean isFinish() {
-        return KING.isDead;
+    public boolean isOver() {
+        return this.isOver;
     }
 }
