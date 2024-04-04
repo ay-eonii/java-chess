@@ -12,8 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
 class SquareDaoTest {
-
-    private final SquareDao squareDao = new SquareDao();
+    
+    private static final FakeSquareDao squareDao = new FakeSquareDao();
 
     @Test
     @Order(1)
@@ -26,7 +26,6 @@ class SquareDaoTest {
         int queryCount = squareDao.addSquares(List.of(squareDto));
 
         assertThat(queryCount).isEqualTo(1);
-
     }
 
     @Test
@@ -37,11 +36,11 @@ class SquareDaoTest {
 
         PositionDto positionDto = new PositionDto(A, ONE);
         PieceDto pieceDto = new PieceDto(QUEEN, WHITE);
-        assertThat(squareDaoAll.get(0)).isEqualTo(new SquareDto(pieceDto, positionDto));
+        assertThat(squareDaoAll).containsOnly(new SquareDto(pieceDto, positionDto));
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     @DisplayName("모든 기물과 위치를 삭제한다.")
     void deleteAll() {
         int queryCount = squareDao.deleteAll();
