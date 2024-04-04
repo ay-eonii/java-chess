@@ -2,9 +2,9 @@ package db;
 
 import org.junit.jupiter.api.*;
 
-import static domain.piece.Color.BLACK;
+import java.util.List;
+
 import static domain.piece.Color.WHITE;
-import static domain.piece.PieceType.KING;
 import static domain.piece.PieceType.QUEEN;
 import static domain.position.File.A;
 import static domain.position.Rank.ONE;
@@ -23,7 +23,7 @@ class SquareDaoTest {
         PieceDto pieceDto = new PieceDto(QUEEN, WHITE);
         SquareDto squareDto = new SquareDto(pieceDto, positionDto);
 
-        int queryCount = squareDao.addSquare(squareDto);
+        int queryCount = squareDao.addSquares(List.of(squareDto));
 
         assertThat(queryCount).isEqualTo(1);
 
@@ -33,29 +33,15 @@ class SquareDaoTest {
     @Order(2)
     @DisplayName("위치로 기물을 찾는다.")
     void findPieceByPosition() {
+        List<SquareDto> squareDaoAll = squareDao.findAll();
+
         PositionDto positionDto = new PositionDto(A, ONE);
-
-        SquareDto squareDto = squareDao.findPieceByPosition(positionDto).get();
-
         PieceDto pieceDto = new PieceDto(QUEEN, WHITE);
-        assertThat(squareDto).isEqualTo(new SquareDto(pieceDto, positionDto));
+        assertThat(squareDaoAll.get(0)).isEqualTo(new SquareDto(pieceDto, positionDto));
     }
 
     @Test
-    @Order(3)
-    @DisplayName("특정 위치의 기물을 변경한다.")
-    void updatePiecePosition() {
-        PositionDto positionDto = new PositionDto(A, ONE);
-        PieceDto pieceDto = new PieceDto(KING, BLACK);
-        SquareDto squareDto = new SquareDto(pieceDto, positionDto);
-
-        int queryCount = squareDao.updateSqaure(squareDto);
-
-        assertThat(queryCount).isEqualTo(1);
-    }
-
-    @Test
-    @Order(4)
+    @Order(2)
     @DisplayName("모든 기물과 위치를 삭제한다.")
     void deleteAll() {
         int queryCount = squareDao.deleteAll();

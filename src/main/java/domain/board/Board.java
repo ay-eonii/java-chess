@@ -1,5 +1,7 @@
 package domain.board;
 
+import db.SquareDto;
+import db.TurnDto;
 import domain.piece.Color;
 import domain.piece.Piece;
 import domain.piece.PieceType;
@@ -13,18 +15,14 @@ public class Board {
     private final Squares squares;
     private final Turn turn;
 
+    public Board(Map<Position, Piece> squares, Turn turn) {
+        this.squares = new Squares(squares);
+        this.turn = turn;
+    }
+
     public Board(Map<Position, Piece> squares) {
         this.squares = new Squares(squares);
         this.turn = new Turn();
-    }
-
-    public Board() {
-        this.squares = new Squares();
-        this.turn = new Turn();
-    }
-
-    public boolean hasExistingBoard() {
-        return !squares.isEmpty();
     }
 
     public void checkTurn(Position sourcePosition) {
@@ -57,22 +55,17 @@ public class Board {
         return squares.extractPieces();
     }
 
-    public void save() {
-        squares.save();
-        turn.save();
-    }
-
-    public void update() {
-        squares.update();
-        turn.update();
-    }
-
-    public void reset() {
-        squares.reset();
-        turn.reset();
-    }
-
     public boolean isFinish() {
         return squares.isFinish();
+    }
+
+    public List<SquareDto> boardDto() {
+        return squares.squaresDto().entrySet().stream()
+                .map(squareEntry -> new SquareDto(squareEntry.getValue(), squareEntry.getKey()))
+                .toList();
+    }
+
+    public TurnDto turnDto() {
+        return turn.turnDto();
     }
 }

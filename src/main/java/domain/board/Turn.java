@@ -1,33 +1,20 @@
 package domain.board;
 
-import db.TurnDao;
 import db.TurnDto;
 import domain.piece.Color;
 
 import java.util.Objects;
-import java.util.Optional;
 
 public class Turn {
 
-    private final TurnDao turnDao;
     private Color color;
 
     public Turn(Color color) {
-        this.turnDao = new TurnDao();
         this.color = color;
     }
 
     public Turn() {
-        this.turnDao = new TurnDao();
-        this.color = initColor();
-    }
-
-    private Color initColor() {
-        Optional<TurnDto> optionalTurnDto = turnDao.findTurn();
-        if (optionalTurnDto.isPresent()) {
-            return optionalTurnDto.get().color();
-        }
-        return Color.WHITE;
+        this.color = Color.WHITE;
     }
 
     public void swap() {
@@ -38,18 +25,6 @@ public class Turn {
         if (this.color != color) {
             throw new IllegalArgumentException(String.format("[ERROR] 현재는 %s 턴입니다.", this.color));
         }
-    }
-
-    public void save() {
-        turnDao.addTurn(new TurnDto(color));
-    }
-
-    public void update() {
-        turnDao.updateTurn(new TurnDto(color));
-    }
-
-    public void reset() {
-        turnDao.deleteAll();
     }
 
     @Override
@@ -63,5 +38,9 @@ public class Turn {
     @Override
     public int hashCode() {
         return Objects.hash(color);
+    }
+
+    public TurnDto turnDto() {
+        return new TurnDto(color);
     }
 }

@@ -2,8 +2,6 @@ package domain.board;
 
 import db.PieceDto;
 import db.PositionDto;
-import db.SquareDao;
-import db.SquareDto;
 import domain.piece.Color;
 import domain.piece.Pawn;
 import domain.piece.Piece;
@@ -17,59 +15,18 @@ import java.util.stream.Collectors;
 
 public class Squares {
 
-    private static final List<Position> ALL_POSITIONS_CACHE;
     private static final Set<Position> RANK_ONE_POSITIONS_CACHE;
 
     static {
-        ALL_POSITIONS_CACHE = Rank.valuesByOrder()
-                .stream()
-                .flatMap(rank -> Arrays.stream(File.values())
-                        .map(file -> new Position(file, rank)))
-                .toList();
-
         RANK_ONE_POSITIONS_CACHE = Arrays.stream(File.values())
                 .map(file -> new Position(file, Rank.ONE))
                 .collect(Collectors.toSet());
     }
 
-    private final SquareDao squareDao;
     private final Map<Position, Piece> squares;
 
     public Squares(Map<Position, Piece> squares) {
-        this.squareDao = new SquareDao();
         this.squares = squares;
-    }
-
-    public Squares() {
-        this.squareDao = new SquareDao();
-        this.squares = findSquares();
-    }
-
-    private Map<Position, Piece> findSquares() {
-        return createPositionDto()
-                .stream()
-                .map(squareDao::findPieceByPosition)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toMap(
-                        squareDto -> new Position(squareDto.positionDto()),
-                        squareDto -> {
-                            PieceDto pieceDto = squareDto.pieceDto();
-                            return Piece.from(pieceDto.pieceType(), pieceDto.color());
-                        },
-                        (position, piece) -> position,
-                        LinkedHashMap::new
-                ));
-    }
-
-    private List<PositionDto> createPositionDto() {
-        return ALL_POSITIONS_CACHE.stream()
-                .map(Position::positionDto)
-                .toList();
-    }
-
-    public boolean isEmpty() {
-        return squares.isEmpty();
     }
 
     public List<PieceType> pieceTypes(Color color) {
@@ -170,30 +127,18 @@ public class Squares {
         return squares.values().stream().toList();
     }
 
-    public void save() {
-        for (Map.Entry<Position, Piece> square : squares.entrySet()) {
-            PositionDto positionDto = square.getKey().positionDto();
-            PieceDto pieceDto = square.getValue().createDto();
-            SquareDto squareDto = new SquareDto(pieceDto, positionDto);
-            squareDao.addSquare(squareDto);
-        }
-    }
-
-    public void update() {
-        for (Position position : ALL_POSITIONS_CACHE) {
-            PositionDto positionDto = position.positionDto();
-            PieceDto pieceDto = squares.get(position).createDto();
-            SquareDto squareDto = new SquareDto(pieceDto, positionDto);
-            squareDao.updateSqaure(squareDto);
-        }
-    }
-
-    public void reset() {
-        squareDao.deleteAll();
-    }
-
     public boolean isFinish() {
         return squares.values().stream()
                 .anyMatch(Piece::isFinish);
+    }
+
+    public Map<PositionDto, PieceDto> squaresDto() {
+        return squares.entrySet().stream()
+                .collect(Collectors.toMap(
+                        squareEntry -> squareEntry.getKey().positionDto(),
+                        squareEntry -> squareEntry.getValue().pieceDto(),
+                        (position, piece) -> position,
+                        LinkedHashMap::new
+                ));
     }
 }

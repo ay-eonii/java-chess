@@ -92,6 +92,10 @@ public class Piece {
         return pieceType.isFinish();
     }
 
+    public PieceDto pieceDto() {
+        return new PieceDto(pieceType, color);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

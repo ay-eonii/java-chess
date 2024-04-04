@@ -1,11 +1,16 @@
 package domain;
 
+import db.ChessDto;
+import db.SquareDto;
+import db.TurnDto;
 import domain.board.Board;
 import domain.board.BoardCreator;
 import domain.piece.Color;
 import domain.position.Position;
 import domain.score.ScoreCalculator;
 import domain.score.Scores;
+
+import java.util.List;
 
 public class Chess {
 
@@ -14,6 +19,11 @@ public class Chess {
 
     public Chess() {
         board = new BoardCreator().create();
+        this.scoreCalculator = new ScoreCalculator();
+    }
+
+    public Chess(ChessDto chessDto) {
+        board = new BoardCreator().create(chessDto.squareDto(), chessDto.turnDto());
         this.scoreCalculator = new ScoreCalculator();
     }
 
@@ -40,16 +50,11 @@ public class Chess {
         return board;
     }
 
-    public void update() {
-        board.update();
+    public List<SquareDto> boardDto() {
+        return board.boardDto();
     }
 
-    public void reset() {
-        board.reset();
-    }
-
-    public void save() {
-        board.reset();
-        board.save();
+    public TurnDto turnDto() {
+        return board.turnDto();
     }
 }

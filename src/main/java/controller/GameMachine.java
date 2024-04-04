@@ -1,5 +1,7 @@
 package controller;
 
+import db.ChessDto;
+import db.ChessRepository;
 import domain.Chess;
 import domain.command.Command;
 import domain.command.PlayCommand;
@@ -9,21 +11,29 @@ import view.InputView;
 import view.OutputView;
 import view.mapper.CommandInput;
 
+import java.util.Optional;
+
 public class GameMachine {
 
     private final InputView inputView = new InputView();
     private final OutputView outputView = new OutputView();
+    private final ChessRepository chessRepository = new ChessRepository();
 
     public void start() {
         outputView.printStartNotice();
         Command command = requestStartCommand();
         if (command.isStart()) {
-            Chess chess = new Chess();
-            chess.save();
+            Chess chess = initChess();
             outputView.printBoard(chess.getBoard());
             play(chess);
-            chess.update();
+            chessRepository.save(chess.boardDto(), chess.turnDto());
         }
+    }
+
+    private Chess initChess() {
+        Optional<ChessDto> chessDto = chessRepository.findChess();
+        return chessDto.map(Chess::new)
+                .orElseGet(Chess::new);
     }
 
     private void play(Chess chess) {
@@ -31,7 +41,7 @@ public class GameMachine {
             Color winnerColor = chess.findWinnerColor();
             outputView.printWinner(winnerColor, winnerColor.opposite());
             checkScore(chess);
-            chess.reset();
+            chessRepository.reset();
             return;
         }
         PlayCommand playCommand = requestPlayCommand();

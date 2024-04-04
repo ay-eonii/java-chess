@@ -2,67 +2,63 @@ package db;
 
 import domain.piece.Color;
 import domain.piece.PieceType;
+import domain.position.File;
+import domain.position.Rank;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SquareDao {
 
     private final ChessDatabase chessDatabase = new ChessDatabase();
 
-    public int addSquare(SquareDto squareDto) {
-        String query = "INSERT INTO squares VALUES(?, ?, ?, ?)";
-        try (Connection connection = chessDatabase.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            PieceDto pieceDto = squareDto.pieceDto();
-            preparedStatement.setString(1, pieceDto.pieceType().name());
-            preparedStatement.setString(2, pieceDto.color().name());
+    public int addSquares(List<SquareDto> squareDtos) {
+        String query = "INSERT INTO squares(piece_type, color, x, y) VALUES(?, ?, ?, ?)";
+        try {
+            Connection connection = chessDatabase.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
 
-            PositionDto positionDto = squareDto.positionDto();
-            preparedStatement.setString(3, positionDto.file().name());
-            preparedStatement.setString(4, positionDto.rank().name());
-            return preparedStatement.executeUpdate();
+            for (SquareDto squareDto : squareDtos) {
+                PieceDto pieceDto = squareDto.pieceDto();
+                preparedStatement.setString(1, pieceDto.pieceType().name());
+                preparedStatement.setString(2, pieceDto.color().name());
+
+                PositionDto positionDto = squareDto.positionDto();
+                preparedStatement.setString(3, positionDto.file().name());
+                preparedStatement.setString(4, positionDto.rank().name());
+                preparedStatement.addBatch();
+                preparedStatement.clearParameters();
+            }
+            int executeCount = preparedStatement.executeBatch().length;
+            preparedStatement.clearBatch();
+            return executeCount;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Optional<SquareDto> findPieceByPosition(PositionDto positionDto) {
-        String query = "SELECT * FROM squares WHERE x = ? AND y = ?";
+    public List<SquareDto> findAll() {
+        String query = "SELECT * FROM squares";
         try (Connection connection = chessDatabase.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, positionDto.file().name());
-            preparedStatement.setString(2, positionDto.rank().name());
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
+            List<SquareDto> squareDtos = new ArrayList<>();
+            while (resultSet.next()) {
+                File file = File.valueOf(resultSet.getString("x"));
+                Rank rank = Rank.valueOf(resultSet.getString("y"));
                 PieceType pieceType = PieceType.valueOf(resultSet.getString("piece_type"));
                 Color color = Color.valueOf(resultSet.getString("color"));
                 PieceDto pieceDto = new PieceDto(pieceType, color);
-                return Optional.of(new SquareDto(pieceDto, positionDto));
+                PositionDto positionDto = new PositionDto(file, rank);
+                squareDtos.add(new SquareDto(pieceDto, positionDto));
             }
-            return Optional.empty();
+            return squareDtos;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
-    public int updateSqaure(SquareDto squareDto) {
-        String query = "UPDATE squares SET piece_type = ?, color = ? WHERE x = ? AND y = ?";
-        try (Connection connection = chessDatabase.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            PieceDto pieceDto = squareDto.pieceDto();
-            preparedStatement.setString(1, pieceDto.pieceType().name());
-            preparedStatement.setString(2, pieceDto.color().name());
-
-            PositionDto positionDto = squareDto.positionDto();
-            preparedStatement.setString(3, positionDto.file().name());
-            preparedStatement.setString(4, positionDto.rank().name());
-            return preparedStatement.executeUpdate();
-        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

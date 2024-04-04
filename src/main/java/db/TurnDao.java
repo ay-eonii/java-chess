@@ -13,7 +13,7 @@ public class TurnDao {
     private final ChessDatabase chessDatabase = new ChessDatabase();
 
     public int addTurn(TurnDto turnDto) {
-        String query = "INSERT INTO turn VALUES (?)";
+        String query = "INSERT INTO turn(color) VALUES (?)";
         try (Connection connection = chessDatabase.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, turnDto.color().name());
@@ -33,17 +33,6 @@ public class TurnDao {
                 return Optional.of(new TurnDto(color));
             }
             return Optional.empty();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public int updateTurn(TurnDto turnDto) {
-        String query = "UPDATE turn SET color = ?";
-        try (Connection connection = chessDatabase.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, turnDto.color().name());
-            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
