@@ -19,6 +19,20 @@ public enum Color {
         return direction.isForward(rankDirection);
     }
 
+    public boolean canMove(Color color) {
+        if (this == NONE) {
+            return false;
+        }
+        return this != color;
+    }
+
+    public boolean canAttack(Color color) {
+        if (this == NONE) {
+            return false;
+        }
+        return this.opposite() == color;
+    }
+
     public Color opposite() {
         if (this == WHITE) {
             return BLACK;

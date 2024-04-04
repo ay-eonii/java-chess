@@ -9,30 +9,16 @@ import java.util.Objects;
 
 public class Piece {
 
-    protected final PieceType pieceType;
-    protected final Color color;
+    private final PieceType pieceType;
+    private final Color color;
 
-    protected Piece(PieceType pieceType, Color color) {
+    private Piece(PieceType pieceType, Color color) {
         this.pieceType = pieceType;
         this.color = color;
     }
 
     public static Piece from(PieceType pieceType, Color color) {
-        if (pieceType.isPawn()) {
-            return new Pawn(pieceType, color);
-        }
         return new Piece(pieceType, color);
-    }
-
-    public static Piece of(Piece piece) {
-        if (piece.pieceType.isPawn()) {
-            return new Pawn(PieceType.PAWN, piece.color);
-        }
-        return piece;
-    }
-
-    public PieceDto createDto() {
-        return new PieceDto(pieceType, color);
     }
 
     public boolean isSameType(PieceType... pieceTypes) {
@@ -48,28 +34,18 @@ public class Piece {
         return color == Color.WHITE;
     }
 
-    public boolean canMove(Piece targetPiece, Position sourcePosition, Position targetPosition) {
-        return canMove(targetPiece) && canMove(sourcePosition, targetPosition);
+    public boolean canMove(Piece targetPiece, Position source, Position target) {
+        if (targetPiece.pieceType == PieceType.PAWN) {
+            return color.canMove(targetPiece.color) && color.canMove(source, target) && pieceType.canMove(source, target);
+        }
+        return color.canMove(targetPiece.color) && pieceType.canMove(source, target);
     }
 
-    protected boolean canMove(Position source, Position target) {
-        return pieceType.canMove(source, target);
-    }
-
-    protected boolean canMove(Piece targetPiece) {
-        return this.color != targetPiece.color;
-    }
-
-    public boolean canAttack(Piece targetPiece, Position sourcePosition, Position targetPosition) {
-        return isOpposite(targetPiece) && canAttack(sourcePosition, targetPosition);
-    }
-
-    public boolean canAttack(Position source, Position target) {
-        return pieceType.canAttack(source, target) && color.canMove(source, target);
-    }
-
-    public boolean isOpposite(Piece targetPiece) {
-        return color != Color.NONE && color != targetPiece.color;
+    public boolean canAttack(Piece targetPiece, Position source, Position target) {
+        if (targetPiece.pieceType == PieceType.PAWN) {
+            return color.canAttack(targetPiece.color) && color.canMove(source, target) && pieceType.canAttack(source, target);
+        }
+        return color.canAttack(targetPiece.color) && pieceType.canAttack(source, target);
     }
 
     public boolean isSameColor(Color color) {

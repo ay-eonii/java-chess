@@ -1,7 +1,6 @@
 package domain.board;
 
 import domain.piece.Color;
-import domain.piece.Pawn;
 import domain.piece.Piece;
 import domain.piece.PieceType;
 import domain.position.File;
@@ -26,14 +25,14 @@ public class SettingRuleTest {
         @DisplayName("랭크가 2일 경우 흰색 폰을 반환한다.")
         void findPieceByPosition_RankTwo_WhitePawn() {
             assertThat(settingRule.findPieceByPosition(Rank.TWO, File.A))
-                    .isEqualTo(new Pawn(PieceType.FIRST_PAWN, Color.WHITE));
+                    .isEqualTo(Piece.from(PieceType.FIRST_PAWN, Color.WHITE));
         }
 
         @Test
         @DisplayName("랭크가 2일 경우 검정색 폰을 반환한다.")
         void findPieceByPosition_RankSeven_BlackPawn() {
             assertThat(settingRule.findPieceByPosition(Rank.SEVEN, File.A))
-                    .isEqualTo(new Pawn(PieceType.FIRST_PAWN, Color.BLACK));
+                    .isEqualTo(Piece.from(PieceType.FIRST_PAWN, Color.BLACK));
         }
     }
 

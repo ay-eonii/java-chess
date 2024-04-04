@@ -5,6 +5,7 @@ import db.TurnDto;
 import domain.piece.Color;
 import domain.piece.Piece;
 import domain.piece.PieceType;
+import domain.piece.PieceTypes;
 import domain.position.Position;
 
 import java.util.List;
@@ -47,8 +48,8 @@ public class Board {
         turn.swap();
     }
 
-    public int countSameFilePawn(Color color) {
-        return squares.countSameFilePawn(color);
+    public List<PieceTypes> findSameFilePieces(Color color) {
+        return squares.countSameFilePawn1(color);
     }
 
     public List<Piece> extractPieces() {

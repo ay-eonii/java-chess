@@ -3,9 +3,9 @@ package domain.board;
 import db.PieceDto;
 import db.PositionDto;
 import domain.piece.Color;
-import domain.piece.Pawn;
 import domain.piece.Piece;
 import domain.piece.PieceType;
+import domain.piece.PieceTypes;
 import domain.position.File;
 import domain.position.Position;
 import domain.position.Rank;
@@ -62,38 +62,33 @@ public class Squares {
         displacePieceByPosition(sourcePosition);
     }
 
-    public int countSameFilePawn(Color color) {
-        long count = 0;
+    public List<PieceTypes> countSameFilePawn1(Color color) {
+        List<PieceTypes> pieceOfSameFile = new ArrayList<>();
         for (Position position : RANK_ONE_POSITIONS_CACHE) {
-            long countOfSameFile = getPawnCountOfSameFile(color, position);
-            count = getPawnCount(countOfSameFile, count);
+            PieceTypes sameFilePieceTypes = new PieceTypes(findSameFilePieceTypes(color, position));
+            pieceOfSameFile.add(sameFilePieceTypes);
         }
-        return (int) count;
+        return pieceOfSameFile;
     }
 
-    private long getPawnCountOfSameFile(Color color, Position position) {
+    private List<PieceType> findSameFilePieceTypes(Color color, Position position) {
         Set<Position> sameFilePositions = position.findSameFilePositions();
         return sameFilePositions.stream()
                 .map(squares::get)
                 .filter(Objects::nonNull)
                 .filter(piece -> piece.isSameColor(color))
-                .filter(piece -> piece.getClass() == Pawn.class)
-                .count();
-    }
-
-    private long getPawnCount(long countOfSameFile, long count) {
-        if (countOfSameFile > 1) {
-            count += countOfSameFile;
-        }
-        return count;
+                .map(Piece::type)
+                .toList();
     }
 
     private boolean canMove(Position sourcePosition, Position targetPosition) {
         Piece sourcePiece = findPieceByPosition(sourcePosition);
         Piece targetPiece = findPieceByPosition(targetPosition);
-        return sourcePiece.canMove(targetPiece, sourcePosition, targetPosition)
-                || sourcePiece.canAttack(targetPiece, sourcePosition, targetPosition);
+        boolean canMove = sourcePiece.canMove(targetPiece, sourcePosition, targetPosition);
+        boolean canAttack = sourcePiece.canAttack(targetPiece, sourcePosition, targetPosition);
+        return canMove || canAttack;
     }
+
 
     private boolean isBlocked(Position source, Position target) {
         List<Position> betweenPositions = new ArrayList<>();
@@ -113,10 +108,9 @@ public class Squares {
     }
 
     private void placePieceByPosition(Piece piece, Position position) {
-        Piece changedPiece = Piece.of(piece);
         Piece targetPiece = findPieceByPosition(position);
         targetPiece.die();
-        squares.replace(position, changedPiece);
+        squares.replace(position, piece);
     }
 
     private void displacePieceByPosition(Position position) {
