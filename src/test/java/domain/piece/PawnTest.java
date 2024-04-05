@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import static domain.board.PositionFixture.B2;
-import static domain.board.PositionFixture.B3;
+import static domain.board.PositionFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PawnTest {
@@ -21,7 +20,7 @@ class PawnTest {
         Piece piece = Piece.from(PieceType.PAWN, Color.BLACK);
         Piece targetPiece = Piece.from(PieceType.NONE, Color.NONE);
 
-        assertThat(piece.canMove(targetPiece, B2, B3)).isTrue();
+        assertThat(piece.canMove(targetPiece, B7, B6)).isTrue();
     }
 
     @ParameterizedTest

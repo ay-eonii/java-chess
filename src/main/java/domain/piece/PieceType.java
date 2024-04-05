@@ -24,11 +24,17 @@ public enum PieceType {
         this.isOver = isOver;
     }
 
-    public boolean canMove(Position source, Position target) {
+    public boolean canMove(Position source, Position target, Color color) {
+        if (this == PAWN || this == FIRST_PAWN) {
+            return moveTactic.canMove(source, target) && color.canMove(source, target);
+        }
         return moveTactic.canMove(source, target);
     }
 
-    public boolean canAttack(Position source, Position target) {
+    public boolean canAttack(Position source, Position target, Color color) {
+        if (this == PAWN || this == FIRST_PAWN) {
+            return attackTactic.canAttack(source, target) && color.canMove(source, target);
+        }
         return attackTactic.canAttack(source, target);
     }
 

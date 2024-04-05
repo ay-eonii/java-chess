@@ -35,17 +35,11 @@ public class Piece {
     }
 
     public boolean canMove(Piece targetPiece, Position source, Position target) {
-        if (targetPiece.pieceType == PieceType.PAWN) {
-            return color.canMove(targetPiece.color) && color.canMove(source, target) && pieceType.canMove(source, target);
-        }
-        return color.canMove(targetPiece.color) && pieceType.canMove(source, target);
+        return color.canMove(targetPiece.color) && pieceType.canMove(source, target, color);
     }
 
     public boolean canAttack(Piece targetPiece, Position source, Position target) {
-        if (targetPiece.pieceType == PieceType.PAWN) {
-            return color.canAttack(targetPiece.color) && color.canMove(source, target) && pieceType.canAttack(source, target);
-        }
-        return color.canAttack(targetPiece.color) && pieceType.canAttack(source, target);
+        return color.canAttack(targetPiece.color) && pieceType.canAttack(source, target, color);
     }
 
     public boolean isSameColor(Color color) {
