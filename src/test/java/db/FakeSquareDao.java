@@ -30,8 +30,6 @@ public class FakeSquareDao {
         for (Map.Entry<Position, Piece> squaresEntry : squares.entrySet()) {
             PositionDto positionDto = squaresEntry.getKey().positionDto();
             PieceDto pieceDto = squaresEntry.getValue().pieceDto();
-            System.out.println(pieceDto.pieceType());
-            System.out.println(pieceDto.color());
             squareDtos.add(new SquareDto(pieceDto, positionDto));
         }
         return squareDtos;
